@@ -1,4 +1,4 @@
-from flask import request, jsonify
+from flask import request, jsonify, session
 from flask.views import MethodView
 from redis import StrictRedis
 from views.utils.db_operation import *
@@ -29,7 +29,18 @@ class VerifyemailserviceView(MethodView):
         values = (email) # 避免sql注入
         res = query(sql, values)
         if res and res[0]['count'] > 0:
-            return jsonify({ "result": "1" }), 200 # 提示用户邮箱已注册
+            return "1", 200 # 提示用户邮箱已注册
         if not res:
-            return jsonify({ "result": "2" }), 200 # 查询失败，提示用户请稍后再试
-        return jsonify({ "result": "0" }), 200 # 邮箱合法
+            return "2", 200 # 查询失败，提示用户请稍后再试
+        return "0", 200 # 邮箱合法
+
+class LoginstateserviceView(MethodView):
+    def get(self):
+        if session.get('username') is None:
+            return "0", 200 # 未登录
+        return "1", 200 # 已登录
+
+class LogoutserviceView(MethodView):
+    def get(self):
+        session.pop('username')
+        return "", 200

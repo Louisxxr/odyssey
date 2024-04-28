@@ -52,9 +52,9 @@ $(document).ready(function() {
                 type: "get",
                 data: { "email": email },
                 success: function(resp) {
-                    if (resp.result === "1") {
+                    if (resp === "1") {
                         $("#send_state_msg").append("邮箱已注册");
-                    } else if (resp.result === "2") {
+                    } else if (resp === "2") {
                         $("#send_state_msg").append("请稍后再试");
                     } else {
                         $.ajax({

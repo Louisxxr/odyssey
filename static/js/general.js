@@ -1,5 +1,5 @@
-url = window.location.pathname;
-login_state = false;
+var url = window.location.pathname;
+var login_state = false;
 
 $(document).ready(function() {
     if (url === "/") {
@@ -13,11 +13,31 @@ $(document).ready(function() {
         $("#specific_js").attr("src", "../static/js/registerpage.js");
     }
 
-    if (login_state) {
-        $("#login").hide();
-        $("#login_nav").show();
-    } else {
-        $("#login_nav").hide();
-        $("#login").show();
-    }
+    $("#login").hide();
+    $("#login_nav").hide();
+
+    $.ajax({
+        url: "/service/loginstate",
+        type: "get",
+        success: function(resp) {
+            if (resp === "1") {
+                login_state = true;
+            }
+            if (login_state) {
+                $("#login_nav").show();
+            } else {
+                $("#login").show();
+            }
+        }
+    });
+
+    $("#logout").click(function() {
+        $.ajax({
+            url: "/service/logout",
+            type: "get",
+            success: function() {
+                location.reload();
+            }
+        });
+    });
 });

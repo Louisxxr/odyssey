@@ -22,4 +22,36 @@ $(document).ready(function() {
     </div>
     <script src="../static/js/plugins/md5.js"></script>
     `);
+
+    $("#login_button").click(function() {
+        let username = $("#username").val();
+        let password = $("#password").val();
+        if (username === "") {
+            $("#login_errormsg").empty();
+            $("#login_errormsg").append("用户名不能为空");
+        } else if (password === "") {
+            $("#login_errormsg").empty();
+            $("#login_errormsg").append("密码不能为空");
+        } else {
+            $("#login_errormsg").empty();
+            let password_encrypted = hex_md5(password);
+            $.ajax({
+                url: "/login",
+                type: "post",
+                data: {
+                    "username": username,
+                    "password": password_encrypted
+                },
+                success: function(resp) {
+                    $("#login_errormsg").append(resp.result);
+                    if (resp.result === "登录成功") {
+                        location.reload();
+                    }
+                },
+                error: function() {
+                    $("#login_errormsg").append("请稍后再试");
+                }
+            });
+        }
+    })
 });

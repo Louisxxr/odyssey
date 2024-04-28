@@ -1,4 +1,4 @@
-from flask import render_template, request, jsonify
+from flask import render_template, request, jsonify, session, redirect
 from flask.views import MethodView
 from redis import StrictRedis
 from views.utils.db_operation import *
@@ -9,12 +9,27 @@ class MainpageView(MethodView):
 
 class LoginpageView(MethodView):
     def get(self):
-        # 验证登录
+        if session.get('username') is not None:
+            return redirect('/')
         return render_template('/general.html')
+    
+    def post(self):
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        sql = "select password from user where username = %s"
+        values = (username)
+        res = query(sql, values)
+        if not res or not res[0]['password'] == password:
+            return jsonify({ "result": "用户名或密码错误" }), 200
+        
+        session['username'] = username
+        return jsonify({ "result": "登录成功" }), 200
 
 class RegisterpageView(MethodView):
     def get(self):
-        # 验证登录
+        if session.get('username') is not None:
+            return redirect('/')
         return render_template('/general.html')
     
     def post(self):
