@@ -11,21 +11,44 @@ def connect_database():
     )
     return conn
 
-def insert(sql):
+def insert(sql, values):
+    conn = connect_database()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute(sql, values)
+        conn.commit()
+    except Exception as e:
+        conn.rollback()
+        print(e)
+        cursor.close()
+        conn.close()
+        return False
+    else:
+        cursor.close()
+        conn.close()
+        return True
+
+def update(sql, values):
     pass
 
-def update(sql):
+def delete(sql, values):
     pass
 
-def delete(sql):
-    pass
-
-def query(sql):
+def query(sql, values):
     conn = connect_database()
     cursor = conn.cursor()
     
-    cursor.execute(sql)
-    conn.commit()
+    data = []
 
-    data = cursor.fetchall()
-    return data
+    try:
+        cursor.execute(sql, values)
+        data = cursor.fetchall()
+    except Exception as e:
+        conn.rollback()
+        print(e)
+        data = []
+    finally:
+        cursor.close()
+        conn.close()
+        return data

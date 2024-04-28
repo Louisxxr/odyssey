@@ -2,23 +2,24 @@ $(document).ready(function() {
     $("#login").empty();
     $("#login").append('<a href="/register">注册</a>');
     $("main").append(`
-    <form>
+    <div>
         <div>
-            <label>
-                用户名：
-                <input type="text">
-            </label>
+            登录
         </div>
         <div>
-            <label>
-                密码：
-                <input type="password">
-            </label>
+            用户名：<input type="text" id="username">
         </div>
-        <a href="/reset_password">忘记密码</a>
         <div>
-            <input type="submit" value="登录">
+            密码：<input type="password" id="password">
         </div>
-    </form>
+        <div>
+            <span id="login_errormsg"></span>
+            <span><a href="/reset_password">忘记密码</a></span>
+        </div>
+        <div>
+            <button id="login_button">登录</button>
+        </div>
+    </div>
+    <script src="../static/js/plugins/md5.js"></script>
     `);
 });
