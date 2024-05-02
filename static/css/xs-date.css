@@ -1,0 +1,99 @@
+.xs-date {
+	color: #606266;
+	border: 1px solid #e4e7ed;
+	box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+	background: #fff;
+	border-radius: 4px;
+	line-height: 30px;
+	margin: 5px auto;
+	width: 300px;
+	min-height: 300px;
+	padding: 10px;
+}
+
+.xs-date-title {
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	cursor: pointer;
+	color: #606266;
+	font-size: 16px;
+}
+
+.date-prev {
+	width: 15%;
+	font-family: cursive;
+}
+
+.date-year-prev {
+	width: 15%;
+	font-family: cursive;
+}
+
+.date-time {
+	width: 40%;
+}
+
+.date-next {
+	width: 15%;
+	font-family: cursive;
+}
+
+.date-year-next {
+	width: 15%;
+	font-family: cursive;
+}
+
+.xs-date-week {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	margin-top: 15px;
+	padding-bottom: 5px;
+	border-bottom: 1px solid #e4e7ed;
+}
+
+.xs-date-week div {
+	list-style: none;
+	width: calc(100%/7);
+	text-align: center;
+	color: #606266;
+	font-size: 14px;
+}
+
+.xs-date-day {
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	margin-top: 15px;
+}
+
+.xs-date-day div {
+	width: calc(100%/7);
+	height: 40px;
+	text-align: center;
+	color: #606266;
+	font-size: 14px;
+	cursor: pointer;
+}
+
+.date-prev:hover,
+.date-next:hover,
+.date-time:hover,
+.xs-date-day div:hover {
+	color: #409eff;
+}
+
+.active {
+	color: #409eff !important;
+}
+
+.Disable {
+	color: #c0c4cc !important;
+}
+
+/* 作者：小宋同学的云
+链接：https://juejin.cn/post/7098537281580957703
+来源：稀土掘金
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。 */
