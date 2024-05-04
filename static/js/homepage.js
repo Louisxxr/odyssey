@@ -18,6 +18,9 @@ $(document).ready(function() {
         <span>回答</span>
         <span>文章</span>
     </div>
+    <div id="question_block">
+        
+    </div>
     `);
 
     $.ajax({

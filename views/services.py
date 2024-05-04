@@ -106,3 +106,26 @@ class City_listServiceView(MethodView):
             ret += str(item['cityid']) + ' ' + item['cityname'] + ' '
         ret = ret[0 : -1]
         return ret, 200
+
+class QuestioninfoServiceView(MethodView):
+    def get(self):
+        questionid = int(request.args.get('questionid'))
+
+        sql = '''select user.userid as 'userid', username, head, title, description, issue_time, views
+        from user, question
+        where user.userid = question.userid and questionid = %s'''
+        values = (questionid)
+        res = query(sql, values)
+        follow_num = query("select count(*) as 'follow_num' from follow_question where questionid = %s", (questionid))[0]['follow_num']
+        answer_num = query("select count(*) as 'answer_num' from answer where questionid = %s", (questionid))[0]['answer_num']
+        return jsonify({
+            "userid": res[0]['userid'],
+            "username": res[0]['username'],
+            "head": res[0]['head'],
+            "title": res[0]['title'],
+            "description": res[0]['description'],
+            "issue_time": res[0]['issue_time'],
+            "views": res[0]['views'],
+            "follow_num": follow_num,
+            "answer_num": answer_num
+        }), 200

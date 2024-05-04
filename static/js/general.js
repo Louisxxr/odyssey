@@ -20,6 +20,11 @@ $(document).ready(function() {
     } else if (url === "/update_userinfo") {
         $("title").prepend(" 的主页 - ");
         $("#specific_js").attr("src", "../static/js/updateuserinfopage.js");
+    } else if (url === "/edit_question") {
+        $("title").prepend("提问 - ");
+        $("#specific_js").attr("src", "../static/js/editquestionpage.js");
+    } else if (/\/question\/\d+/.test(url)) {
+        $("#specific_js").attr("src", "../static/js/questionpage.js");
     }
 
     $("#login").hide();

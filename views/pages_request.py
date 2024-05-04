@@ -212,3 +212,29 @@ class Update_userinfoPageView(MethodView):
             if update(sql, values):
                 return "保存成功", 200
             return "请稍后再试", 200
+
+class Edit_questionPageView(MethodView):
+    def get(self):
+        if session.get('username') is None:
+            return redirect('/')
+        return render_template('/general.html')
+    
+    def post(self):
+        username = session.get('username')
+        userid = query("select userid from user where username = %s", (username))[0]['userid']
+        title = request.form.get('title')
+        description = request.form.get('description')
+
+        sql = "insert into question(userid, title, description, issue_time) values (%s, %s, %s, now())"
+        values = (userid, title, description)
+        if insert(sql, values):
+            questionid = query("select max(questionid) as 'questionid' from question", ())[0]['questionid']
+            return str(questionid), 200
+        return "0", 200
+
+class QuestionPageView(MethodView):
+    def get(self, questionid):
+        questionid = int(questionid)
+
+        update("update question set views = views + 1 where questionid = %s", (questionid)) # 要注意确认真实值
+        return render_template('/general.html')

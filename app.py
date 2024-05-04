@@ -16,6 +16,8 @@ app.add_url_rule('/register', view_func = RegisterPageView.as_view('registerpage
 app.add_url_rule('/reset_password', view_func = Reset_passwordPageView.as_view('resetpasswordpage'))
 app.add_url_rule('/homepage', view_func = HomePageView.as_view('homepage')) # to be finished
 app.add_url_rule('/update_userinfo', defaults = { 'item': None }, view_func = Update_userinfoPageView.as_view('updateuserinfopage'))
+app.add_url_rule('/edit_question', view_func = Edit_questionPageView.as_view('editquestionpage'))
+app.add_url_rule('/question/<questionid>', view_func = QuestionPageView.as_view('questionpage')) # to be finished
 # 服务
 app.add_url_rule('/service/authcode', view_func = AuthcodeServiceView.as_view('authcodeservice'))
 app.add_url_rule('/service/verifyemail', view_func = Verify_emailServiceView.as_view('verifyemailservice'))
@@ -26,6 +28,7 @@ app.add_url_rule('/service/uploadimg/<item>', view_func = Upload_imgServiceView.
 app.add_url_rule('/update_userinfo/<item>', view_func = Update_userinfoPageView.as_view('updateuserinfoservice'))
 app.add_url_rule('/service/provincelist', view_func = Province_listServiceView.as_view('provincelistservice'))
 app.add_url_rule('/service/citylist', view_func = City_listServiceView.as_view('citylistservice'))
+app.add_url_rule('/service/questioninfo', view_func = QuestioninfoServiceView.as_view('questioninfoservice'))
 
 if __name__ == '__main__':
     app.run()
