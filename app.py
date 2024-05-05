@@ -29,6 +29,8 @@ app.add_url_rule('/update_userinfo/<item>', view_func = Update_userinfoPageView.
 app.add_url_rule('/service/provincelist', view_func = Province_listServiceView.as_view('provincelistservice'))
 app.add_url_rule('/service/citylist', view_func = City_listServiceView.as_view('citylistservice'))
 app.add_url_rule('/service/questioninfo', view_func = QuestioninfoServiceView.as_view('questioninfoservice'))
+app.add_url_rule('/service/userasset/<asset>', view_func = UserassetServiceView.as_view('userassetservice'))
+app.add_url_rule('/service/delete/<asset>', view_func = DeleteServiceView.as_view('deleteservice'))
 
 if __name__ == '__main__':
     app.run()

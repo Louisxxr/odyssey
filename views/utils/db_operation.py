@@ -48,7 +48,23 @@ def update(sql, values):
         return True
 
 def delete(sql, values):
-    pass
+    conn = connect_database()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute(sql, values)
+        conn.commit()
+    except Exception as e:
+        conn.rollback()
+        print(e)
+        cursor.close()
+        conn.close()
+        return False
+    else:
+        cursor.close()
+        conn.close()
+        return True
+    
 
 def query(sql, values):
     conn = connect_database()

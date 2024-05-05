@@ -19,13 +19,14 @@ class LoginPageView(MethodView):
         username = request.form.get('username')
         password = request.form.get('password')
 
-        sql = "select username, password from user where username = %s"
+        sql = "select userid, username, password from user where username = %s"
         values = (username)
         res = query(sql, values)
         if not res or not password == res[0]['password'] or not username == res[0]['username']:
             return jsonify({ "result": "用户名或密码错误" }), 200
         
         session['username'] = res[0]['username']
+        session['userid'] = res[0]['userid']
         return jsonify({ "result": "登录成功" }), 200
 
 class RegisterPageView(MethodView):
@@ -220,8 +221,7 @@ class Edit_questionPageView(MethodView):
         return render_template('/general.html')
     
     def post(self):
-        username = session.get('username')
-        userid = query("select userid from user where username = %s", (username))[0]['userid']
+        userid = session.get('userid')
         title = request.form.get('title')
         description = request.form.get('description')
 

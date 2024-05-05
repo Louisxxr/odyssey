@@ -53,6 +53,7 @@ class Login_stateServiceView(MethodView):
 class LogoutServiceView(MethodView):
     def get(self):
         session.pop('username')
+        session.pop('userid')
         return "", 200
 
 class UserinfoServiceView(MethodView):
@@ -129,3 +130,33 @@ class QuestioninfoServiceView(MethodView):
             "follow_num": follow_num,
             "answer_num": answer_num
         }), 200
+
+class UserassetServiceView(MethodView):
+    def get(self, asset):
+        userid = session['userid']
+
+        if asset == "question":
+            sql = "select questionid, title, issue_time, views from question where userid = %s order by issue_time"
+            values = (userid)
+            res = query(sql, values)
+
+            magic_split_flag = "" # 因为title允许各种字符
+            for i in range(4):
+                magic_split_flag += str(random.randint(0, 9))
+
+            ret = magic_split_flag
+            for item in res:
+                ret += str(item['questionid']) + magic_split_flag + item['title'] + magic_split_flag + str(item['issue_time']) + magic_split_flag + str(item['views']) + magic_split_flag
+            ret = ret[0 : -4]
+            return ret, 200
+
+class DeleteServiceView(MethodView):
+    def get(self, asset):
+        if asset == "question":
+            questionid = int(request.args.get('questionid'))
+
+            sql = "delete from question where questionid = %s"
+            values = (questionid)
+            if delete(sql, values):
+                return "", 200
+            return "", 400
