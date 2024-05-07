@@ -123,12 +123,16 @@ create unique index idx_username on user(username);
 
 create index idx_question_userid on question(userid);
 create index idx_question_title on question(title);
+create index idx_question_issue_time on question(issue_time);
+create index idx_question_views on question(views);
 
 create index idx_answer_questionid on answer(questionid);
 create index idx_answer_userid on answer(userid);
 
 create index idx_article_userid on article(userid);
 create index idx_article_title on article(title);
+create index idx_article_update_time on article(update_time);
+create index idx_article_views on article(views);
 
 create index idx_comment_to_answer_userid on comment_to_answer(userid);
 create index idx_comment_to_answer_answerid on comment_to_answer(answerid);

@@ -10,7 +10,7 @@ app.permanent_session_lifetime = timedelta(days = 30) # session_id在30天后过
 
 # 注册视图
 # 页面
-app.add_url_rule('/', view_func = MainPageView.as_view('mainpage')) # to be finished
+app.add_url_rule('/', view_func = MainPageView.as_view('mainpage'))
 app.add_url_rule('/login', view_func = LoginPageView.as_view('loginpage'))
 app.add_url_rule('/register', view_func = RegisterPageView.as_view('registerpage'))
 app.add_url_rule('/reset_password', view_func = Reset_passwordPageView.as_view('resetpasswordpage'))
@@ -31,6 +31,7 @@ app.add_url_rule('/service/citylist', view_func = City_listServiceView.as_view('
 app.add_url_rule('/service/questioninfo', view_func = QuestioninfoServiceView.as_view('questioninfoservice'))
 app.add_url_rule('/service/userasset/<asset>', view_func = UserassetServiceView.as_view('userassetservice'))
 app.add_url_rule('/service/delete/<asset>', view_func = DeleteServiceView.as_view('deleteservice'))
+app.add_url_rule('/service/matching/<rule>', view_func = MatchingServiceView.as_view('matchingservice'))
 
 if __name__ == '__main__':
     app.run()

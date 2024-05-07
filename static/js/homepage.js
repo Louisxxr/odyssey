@@ -58,7 +58,6 @@ $(document).ready(function() {
     });
 
     $.ajax({
-        async: false,
         url: "/service/userasset/question",
         type: "get",
         success: function(resp) {
