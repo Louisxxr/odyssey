@@ -10,19 +10,15 @@ import random
 class AuthcodeServiceView(MethodView):
     def get(self):
         email = request.args.get('email')
-        # authcode = ''
-        # for i in range(6):
-        #     authcode += str(random.randint(0, 9))
+        authcode = ''
+        for i in range(6):
+            authcode += str(random.randint(0, 9))
         
-        # if send_authcode(email, authcode):
-        #     conn = StrictRedis(host = 'localhost', port = 6379, db = 0)
-        #     conn.set(email, authcode, 3600) # 一小时后过期
-        #     return jsonify({ "result": "已发送" }), 200
-        # return jsonify({ "result": "发送失败，请稍后再试" }), 200
-        authcode = '123456'
-        conn = StrictRedis(host = 'localhost', port = 6379, db = 0)
-        conn.set(email, authcode, 3600) # 一小时后过期
-        return jsonify({ "result": "已发送" }), 200
+        if send_authcode(email, authcode):
+            conn = StrictRedis(host = 'localhost', port = 6379, db = 0)
+            conn.set(email, authcode, 3600) # 一小时后过期
+            return jsonify({ "result": "已发送" }), 200
+        return jsonify({ "result": "发送失败，请稍后再试" }), 200
 
 class Verify_emailServiceView(MethodView):
     def get(self):
