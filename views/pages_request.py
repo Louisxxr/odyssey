@@ -238,3 +238,14 @@ class QuestionPageView(MethodView):
 
         update("update question set views = views + 1 where questionid = %s", (questionid)) # 要注意确认真实值
         return render_template('/general.html')
+    
+    def post(self, questionid):
+        questionid = int(questionid)
+        userid = session.get('userid')
+        content = request.form.get('content')
+
+        sql = "insert into answer(questionid, userid, content, issue_time, update_time) values (%s, %s, %s, now(), now())"
+        values = (questionid, userid, content)
+        if insert(sql, values):
+            return "", 200
+        return "", 400

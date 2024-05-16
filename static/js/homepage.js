@@ -58,6 +58,7 @@ $(document).ready(function() {
     });
 
     $.ajax({
+        async: false, // 重要
         url: "/service/userasset/question",
         type: "get",
         success: function(resp) {

@@ -139,3 +139,31 @@ create index idx_comment_to_answer_answerid on comment_to_answer(answerid);
 
 create index idx_comment_to_article_userid on comment_to_article(userid);
 create index idx_comment_to_article_articleid on comment_to_article(articleid);
+
+
+-- 触发器（delimiter ;;）
+
+create trigger after_insert_question after insert on question
+for each row
+begin
+declare userid int;
+declare questionid int;
+set userid = new.userid;
+set questionid = new.questionid;
+insert into follow_question values (userid, questionid, now());
+end;;
+
+create trigger before_update_answer before update on answer
+for each row
+begin
+set new.update_time = now();
+end;;
+
+
+-- 补充
+
+ALTER TABLE `answer` DROP FOREIGN KEY `answer_ibfk_1`;
+ALTER TABLE `answer` ADD CONSTRAINT `answer_ibfk_1` FOREIGN KEY (`questionid`) REFERENCES `question` (`questionid`) ON DELETE CASCADE;
+
+ALTER TABLE `follow_question` DROP FOREIGN KEY `follow_question_ibfk_2`;
+ALTER TABLE `follow_question` ADD CONSTRAINT `follow_question_ibfk_2` FOREIGN KEY (`questionid`) REFERENCES `question` (`questionid`) ON DELETE CASCADE;

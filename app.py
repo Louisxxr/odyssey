@@ -32,6 +32,9 @@ app.add_url_rule('/service/questioninfo', view_func = QuestioninfoServiceView.as
 app.add_url_rule('/service/userasset/<asset>', view_func = UserassetServiceView.as_view('userassetservice'))
 app.add_url_rule('/service/delete/<asset>', view_func = DeleteServiceView.as_view('deleteservice'))
 app.add_url_rule('/service/matching/<rule>', view_func = MatchingServiceView.as_view('matchingservice'))
+app.add_url_rule('/service/checkfollowquestion', view_func = Check_follow_questionServiceView.as_view('checkfollowquestionservice'))
+app.add_url_rule('/service/followquestion', view_func = Follow_questionServiceView.as_view('followquestionservice'))
+app.add_url_rule('/service/unfollowquestion', view_func = Unfollow_questionServiceView.as_view('unfollowquestionservice'))
 
 if __name__ == '__main__':
     app.run()

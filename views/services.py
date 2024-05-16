@@ -76,10 +76,21 @@ class UserinfoServiceView(MethodView):
 class Upload_imgServiceView(MethodView):
     def post(self, item):
         userid = session.get('userid')
-        img = request.files.get('file')
+
+        img = None
+        if item == 'assets_answer':
+            img = request.files.get('wangeditor-uploaded-image')
+        else:
+            img = request.files.get('file')
+
         path = '/static/img/' + item + '/' + str(userid) + '-' + str(time.time()) + '.' + img.content_type.split('/')[1]
         img.save(os.getcwd() + path)
-        return path, 200
+        return jsonify({
+            "errno": 0,
+            "data": {
+                "url": path
+            }
+        })
 
 class Province_listServiceView(MethodView):
     def get(self):
@@ -165,12 +176,12 @@ class MatchingServiceView(MethodView):
             res = query('''select user.userid as 'userid', username, head, questionid, title, issue_time, views
             from user, question
             where user.userid = question.userid
-            order by views desc limit 5''', ())
+            order by views desc limit 20''', ())
             
             res += query('''select user.userid as 'userid', username, head, articleid, title, update_time, views
             from user, article
             where user.userid = article.userid
-            order by views desc limit 5''', ())
+            order by views desc limit 20''', ())
 
             magic_split_flag = ''
             for i in range(4):
@@ -211,12 +222,12 @@ class MatchingServiceView(MethodView):
             res = query('''select user.userid as 'userid', username, head, questionid, title, issue_time, views
             from user, question
             where user.userid = question.userid
-            order by issue_time desc limit 5''', ())
+            order by issue_time desc limit 20''', ())
             
             res += query('''select user.userid as 'userid', username, head, articleid, title, update_time, views
             from user, article
             where user.userid = article.userid
-            order by update_time desc limit 5''', ())
+            order by update_time desc limit 20''', ())
 
             magic_split_flag = ''
             for i in range(4):
@@ -252,3 +263,34 @@ class MatchingServiceView(MethodView):
                 res.pop(item_idx)
             ret = ret[0 : -4]
             return ret, 200
+
+class Check_follow_questionServiceView(MethodView):
+    def get(self):
+        userid = session.get('userid')
+        questionid = int(request.args.get('questionid'))
+
+        res = query("select count(*) as 'count' from follow_question where userid = %s and questionid = %s", (userid, questionid))[0]['count']
+        if res == 1:
+            return "1", 200
+        else:
+            return "0", 200
+
+class Follow_questionServiceView(MethodView):
+    def get(self):
+        userid = session.get('userid')
+        questionid = int(request.args.get('questionid'))
+
+        if insert("insert into follow_question values (%s, %s, now())", (userid, questionid)):
+            return "", 200
+        else:
+            return "", 400
+
+class Unfollow_questionServiceView(MethodView):
+    def get(self):
+        userid = session.get('userid')
+        questionid = int(request.args.get('questionid'))
+
+        if delete("delete from follow_question where userid = %s and questionid = %s", (userid, questionid)):
+            return "", 200
+        else:
+            return "", 400

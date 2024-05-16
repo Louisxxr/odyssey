@@ -267,7 +267,7 @@ $(document).ready(function() {
                 processData: false,
                 contentType: false,
                 success: function(resp) {
-                    let head = resp;
+                    let head = resp.data.url;
                     $.ajax({
                         url: "/update_userinfo/head",
                         type: "post",
