@@ -22,12 +22,20 @@ class LoginPageView(MethodView):
         sql = "select userid, username, password from user where username = %s"
         values = (username)
         res = query(sql, values)
-        if not res or not password == res[0]['password'] or not username == res[0]['username']:
-            return jsonify({ "result": "用户名或密码错误" }), 200
-        
-        session['username'] = res[0]['username']
-        session['userid'] = res[0]['userid']
-        return jsonify({ "result": "登录成功" }), 200
+        if res and password == res[0]['password'] and username == res[0]['username']:
+            session['username'] = res[0]['username']
+            session['userid'] = res[0]['userid']
+            return jsonify({ "result": "登录成功" }), 200
+
+        sql = "select userid, username, password from user where email = %s"
+        values = (username)
+        res = query(sql, values)
+        if res and password == res[0]['password']:
+            session['username'] = res[0]['username']
+            session['userid'] = res[0]['userid']
+            return jsonify({ "result": "登录成功" }), 200
+
+        return jsonify({ "result": "用户名或密码错误" }), 200
 
 class RegisterPageView(MethodView):
     def get(self):
@@ -244,8 +252,15 @@ class QuestionPageView(MethodView):
         userid = session.get('userid')
         content = request.form.get('content')
 
-        sql = "insert into answer(questionid, userid, content, issue_time, update_time) values (%s, %s, %s, now(), now())"
-        values = (questionid, userid, content)
-        if insert(sql, values):
-            return "", 200
-        return "", 400
+        if query("select * from answer where userid = %s and questionid = %s", (userid, questionid)):
+            sql = "update answer set content = %s where userid = %s and questionid = %s"
+            values = (content, userid, questionid)
+            if update(sql, values):
+                return "", 200
+            return "", 400
+        else:
+            sql = "insert into answer(questionid, userid, content, issue_time, update_time) values (%s, %s, %s, now(), now())"
+            values = (questionid, userid, content)
+            if insert(sql, values):
+                return "", 200
+            return "", 400

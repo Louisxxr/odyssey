@@ -90,7 +90,7 @@ create table comment_to_answer (
     commentid int primary key auto_increment,
     userid int not null,
     answerid int not null,
-    content varchar(500) not null,
+    content text not null,
     issue_time datetime not null,
     foreign key(userid) references user(userid),
     foreign key(answerid) references answer(answerid)
@@ -100,7 +100,7 @@ create table comment_to_article (
     commentid int primary key auto_increment,
     userid int not null,
     articleid int not null,
-    content varchar(500) not null,
+    content text not null,
     issue_time datetime not null,
     foreign key(userid) references user(userid),
     foreign key(articleid) references article(articleid)
@@ -117,28 +117,33 @@ create table follow_user (
 
 -- 索引
 
-create unique index idx_cityname on city(cityname);
-
 create unique index idx_username on user(username);
 
 create index idx_question_userid on question(userid);
-create index idx_question_title on question(title);
 create index idx_question_issue_time on question(issue_time);
 create index idx_question_views on question(views);
 
 create index idx_answer_questionid on answer(questionid);
 create index idx_answer_userid on answer(userid);
+create index idx_answer_update_time on answer(update_time);
 
 create index idx_article_userid on article(userid);
-create index idx_article_title on article(title);
 create index idx_article_update_time on article(update_time);
 create index idx_article_views on article(views);
 
+create index idx_follow_question_issue_time on follow_question(issue_time);
+
+create index idx_like_answer_issue_time on like_answer(issue_time);
+
+create index idx_like_article_issue_time on like_article(issue_time);
+
 create index idx_comment_to_answer_userid on comment_to_answer(userid);
 create index idx_comment_to_answer_answerid on comment_to_answer(answerid);
+create index idx_comment_to_answer_issue_time on comment_to_answer(issue_time);
 
 create index idx_comment_to_article_userid on comment_to_article(userid);
 create index idx_comment_to_article_articleid on comment_to_article(articleid);
+create index idx_comment_to_article_issue_time on comment_to_article(issue_time);
 
 
 -- 触发器（delimiter ;;）
@@ -167,3 +172,8 @@ ALTER TABLE `answer` ADD CONSTRAINT `answer_ibfk_1` FOREIGN KEY (`questionid`) R
 
 ALTER TABLE `follow_question` DROP FOREIGN KEY `follow_question_ibfk_2`;
 ALTER TABLE `follow_question` ADD CONSTRAINT `follow_question_ibfk_2` FOREIGN KEY (`questionid`) REFERENCES `question` (`questionid`) ON DELETE CASCADE;
+
+ALTER TABLE answer CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE article CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE comment_to_answer CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE comment_to_article CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

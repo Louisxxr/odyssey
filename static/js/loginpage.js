@@ -7,10 +7,10 @@ $(document).ready(function() {
             登录
         </div>
         <div>
-            用户名：<input type="text" id="username">
+            用户名：<input type="text" id="username" placeholder="用户名或邮箱">
         </div>
         <div>
-            密码：<input type="password" id="password">
+            密码：<input type="password" id="password" placeholder="密码">
         </div>
         <div>
             <span id="login_errormsg"></span>
