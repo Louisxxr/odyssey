@@ -40,16 +40,18 @@ $(document).ready(function() {
     $("main").append(`
     <div>
         <div>
-            <span><a href="/user/${question_info["userid"]}"><img src="${question_info["head"]}" height="40" width="40"></a></span>
+            <span><a href="/user/${question_info["userid"]}"><img src="${question_info["head"]}" height="40" width="40" style="border-radius: 10%;"></a></span>
             <span>${question_info["username"]}</span>
         </div>
         <div>
-            <span>${question_info["title"]}</span>
-            <span id="follow_sign">共 ${question_info["follow_num"]} 人关注</span>
-            <span id="follow_button"></span>
+            ${question_info["title"]}
+        </div>
+        <div style="background-color: #eee; padding: 1px 1px;">
+            ${question_info["description"]}
         </div>
         <div>
-            <span>${question_info["description"]}</span>
+            <span id="follow_sign">共 ${question_info["follow_num"]} 人关注</span>
+            <span id="follow_button"></span>
         </div>
         <div>
             <span><img src="/static/img/view.svg" alt="浏览量" height="15" width="15"></span>
@@ -277,7 +279,7 @@ $(document).ready(function() {
     $("#submit_answer_button").click(function() {
         let content = $("#editor-content").val();
         if (content === "" || content === "<p><br></p>") {
-            alert("回答不能为空哦~");
+            alert("回答不能为空~");
         } else {
             $.ajax({
                 url: "/question/" + questionid,
@@ -288,7 +290,7 @@ $(document).ready(function() {
                     location.reload();
                 },
                 error: function() {
-                    alert("发布失败，稍后再试哦~");
+                    alert("发布失败，请稍后再试~");
                 }
             });
         }
@@ -320,7 +322,7 @@ $(document).ready(function() {
                     $("#answers_to_the_question").append(`
                     <div>
                         <div>
-                            <span><a href="/user/${uid}"><img src="${head}" height="40" width="40"></a></span>
+                            <span><a href="/user/${uid}"><img src="${head}" height="40" width="40" style="border-radius: 10%;"></a></span>
                             <span>${username}</span>
                         </div>
                         <div id="editor-content-view" class="editor-content-view">
@@ -330,7 +332,7 @@ $(document).ready(function() {
                             <span>更新于 ${update_time}</span>
                         </div>
                         <div>
-                            <div style="display: inline-block; width: 140px;">
+                            <div style="display: inline-block; width: 150px;">
                                 <span id="like_answer_button_${answerid}"></span>
                                 <span id="like_answer_sign_${answerid}">${like_num}</span>
                                 <span id="added_to_collection_${answerid}">已同步至收藏夹</span>
@@ -342,7 +344,7 @@ $(document).ready(function() {
                                     });
                                 </script>
                             </div>
-                            <div style="display: inline-block; width: 140px;">
+                            <div style="display: inline-block; width: 150px;">
                                 <span><img id="to_comment_answer_${answerid}" style="cursor:pointer;" src="/static/img/comment.svg" alt="评论" height="20" width="20"></span>
                                 <span>${comment_num}</span>
                             </div>
@@ -471,9 +473,9 @@ $(document).ready(function() {
                             $(`#comments_to_answer_${answerid}`).append(`
                             <div>
                                 <div>
-                                    <span><a href="/user/${userid}"><img src="${head}" height="30" width="30"></a></span>
+                                    <span><a href="/user/${userid}"><img src="${head}" height="30" width="30" style="border-radius: 10%;"></a></span>
                                     <span>${username}</span>
-                                    <div style="display: inline-block;" class="editor-content-view">${content}</div>
+                                    <div style="display: inline-block;" class="editor-content-view-for-comment">${content}</div>
                                     <span>${issue_time}</span>
                                 </div>
                             </div>
@@ -549,7 +551,7 @@ $(document).ready(function() {
                 let answerid = $(this).context.id.split("_")[3];
                 let content = $(`#editor-content-${answerid}`).val();
                 if (content === "" || content === "<p><br></p>") {
-                    alert("评论不能为空哦~");
+                    alert("评论不能为空~");
                 } else {
                     $.ajax({
                         url: "/service/submitcomment/answer",
@@ -600,7 +602,7 @@ $(document).ready(function() {
                             });
                         },
                         error: function() {
-                            alert("发布失败，稍后再试哦~");
+                            alert("发布失败，请稍后再试~");
                         }
                     });
                 }

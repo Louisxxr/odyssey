@@ -450,7 +450,7 @@ $(document).ready(function() {
             let signature = $("#fillin_signature").val();
             if (signature.length > 250) {
                 $("#upload_signature_errormsg").empty();
-                $("#upload_signature_errormsg").append("输入过长啦~");
+                $("#upload_signature_errormsg").append("内容过长");
             } else {
                 $.ajax({
                     url: "/update_userinfo/signature",
@@ -540,7 +540,7 @@ $(document).ready(function() {
             let job = $("#fillin_job").val();
             if (job.length > 25) {
                 $("#upload_job_errormsg").empty();
-                $("#upload_job_errormsg").append("输入过长啦~");
+                $("#upload_job_errormsg").append("内容过长");
             } else {
                 $.ajax({
                     url: "/update_userinfo/job",

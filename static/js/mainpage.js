@@ -48,11 +48,11 @@ $(document).ready(function() {
                 $("#hotspot_block").append(`
                 <div>
                     <div>
-                        <span><a href="/user/${userid}"><img src="${head}" height="40" width="40"></a></span>
+                        <span><a href="/user/${userid}"><img src="${head}" height="40" width="40" style="border-radius: 10%;"></a></span>
                         <span>${username}</span>
+                        <span><img src="/static/img/${type_msg["en"]}.svg" alt="${type_msg["zh"]}" height="20" width="20"></span>
                     </div>
                     <div>
-                        <span><img src="/static/img/${type_msg["en"]}.svg" alt="${type_msg["zh"]}" height="20" width="20"></span>
                         <span><a href="/${type_msg["en"]}/${assetid}">${title}</a></span>
                     </div>
                 </div>
@@ -111,11 +111,11 @@ $(document).ready(function() {
                 $("#newspot_block").append(`
                 <div>
                     <div>
-                        <span><a href="/user/${userid}"><img src="${head}" height="40" width="40"></a></span>
+                        <span><a href="/user/${userid}"><img src="${head}" height="40" width="40" style="border-radius: 10%;"></a></span>
                         <span>${username}</span>
+                        <span><img src="/static/img/${type_msg["en"]}.svg" alt="${type_msg["zh"]}" height="20" width="20"></span>
                     </div>
                     <div>
-                        <span><img src="/static/img/${type_msg["en"]}.svg" alt="${type_msg["zh"]}" height="20" width="20"></span>
                         <span><a href="/${type_msg["en"]}/${assetid}">${title}</a></span>
                     </div>
                 </div>

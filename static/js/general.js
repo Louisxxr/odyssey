@@ -25,6 +25,11 @@ $(document).ready(function() {
         $("#specific_js").attr("src", "../static/js/editquestionpage.js");
     } else if (/\/question\/\d+/.test(url)) {
         $("#specific_js").attr("src", "../static/js/questionpage.js");
+    } else if (url === "/edit_article") {
+        $("title").prepend("写文章 - ");
+        $("#specific_js").attr("src", "../static/js/editarticlepage.js");
+    } else if (/\/article\/\d+/.test(url)) {
+        $("#specific_js").attr("src", "../static/js/articlepage.js");
     }
 
     $("#login").hide();

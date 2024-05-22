@@ -1,7 +1,7 @@
 $(document).ready(function() {
     $("main").append(`
     <div>
-        <img id="homepage_head" height="100" width="100">
+        <img id="homepage_head" height="100" width="100" style="border-radius: 5%;">
     </div>
     <div>
         <span id="homepage_sex"></span>
