@@ -1,8 +1,7 @@
 var url = window.location.pathname.split("/");
-var questionid = url[url.length - 1]
+var questionid = url[url.length - 1];
 var question_info = new Array();
 var login_state = false;
-var my_head;
 
 $(document).ready(function() {
     $.ajax({
@@ -23,7 +22,7 @@ $(document).ready(function() {
         }
     });
 
-    $("title").prepend(question_info["title"] + " - ");
+    $("title").prepend(question_info["title"].slice(3, -4) + " - ");
 
     $.ajax({
         async: false,
@@ -32,63 +31,90 @@ $(document).ready(function() {
         success: function(resp) {
             if (resp !== "0") {
                 login_state = true;
-                my_head = resp.head;
             }
         }
     });
 
     $("main").append(`
-    <div>
-        <div>
-            <span><a href="/user/${question_info["userid"]}"><img src="${question_info["head"]}" height="40" width="40" style="border-radius: 10%;"></a></span>
-            <span>${question_info["username"]}</span>
+    <link rel="stylesheet" href="../static/css/wangeditor.css">
+    <script src="../static/js/plugins/wangeditor.js"></script>
+    <style>
+        #questioninfo {
+            background-color: white;
+            border-radius: 10px;
+            border: 1px dashed black;
+            padding-top: 2%;
+            padding-bottom: 2%;
+            padding-left: 2%;
+            padding-right: 2%;
+            margin-top: 1%;
+            margin-bottom: 1%;
+        }
+        .question_answers {
+            background-color: white;
+            border-radius: 10px;
+            border: 1px dashed black;
+            padding-top: 2%;
+            padding-bottom: 2%;
+            padding-left: 2%;
+            padding-right: 2%;
+            margin-top: 1%;
+            margin-bottom: 1%;
+        }
+    </style>
+    <div id="questioninfo">
+        <div style="display: flex; align-items: center;">
+            <span style="display: inline-flex; align-items: center;"><a href="/user/${question_info["userid"]}"><img src="${question_info["head"]}" height="40" width="40" style="border-radius: 10%;"></a></span>
+            &nbsp&nbsp&nbsp
+            <span style="display: inline-flex; align-items: center;">${question_info["username"]}</span>
         </div>
         <div>
-            ${question_info["title"]}
+            <h1>${question_info["title"].slice(3, -4)}</h1>
         </div>
         <div style="background-color: #eee; padding: 1px 1px;">
             ${question_info["description"]}
         </div>
-        <div>
-            <span id="follow_sign">共 ${question_info["follow_num"]} 人关注</span>
-            <span id="follow_button"></span>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="margin-right: auto;">
+                <span id="follow_sign">共 ${question_info["follow_num"]} 人关注</span>
+                <span id="follow_button"></span>
+            </div>
+            <div style="margin-left: auto;">
+                <span><img src="/static/img/view.svg" alt="浏览量" height="15" width="15"></span>
+                <span>${question_info["views"]}</span>
+            </div>
         </div>
         <div>
-            <span><img src="/static/img/view.svg" alt="浏览量" height="15" width="15"></span>
-            <span>${question_info["views"]}</span>
             <span>共 ${question_info["answer_num"]} 条回答</span>
             <span><button id="answer_question_button"></button></span>
         </div>
+
+        <div id="editor-wrapper">
+            <div id="toolbar-container"><!-- 工具栏 --></div>
+            <div id="editor-container"><!-- 编辑器 --></div>
+        </div>
+        <textarea id="editor-content"></textarea>
+        <style>
+            #editor-wrapper {
+                border: 1px solid #ccc;
+                z-index: 100; /* 按需定义 */
+            }
+            #toolbar-container { border-bottom: 1px solid #ccc; }
+            #editor-container { height: 200px; }
+        </style>
+        <script>
+            $(document).ready(function() {
+                $("#editor-wrapper").hide();
+                $("#submit_answer_block").hide();
+                $("#editor-content").hide();
+            });
+        </script>
+        <div id="submit_answer_block">
+            <span><button id="submit_answer_button">发布</button></span>
+            <span id="submit_answer_msg"></span>
+        </div>
     </div>
 
-    <link rel="stylesheet" href="../static/css/wangeditor.css">
-    <style>
-        #editor-wrapper {
-            border: 1px solid #ccc;
-            z-index: 100; /* 按需定义 */
-        }
-        #toolbar-container { border-bottom: 1px solid #ccc; }
-        #editor-container { height: 200px; }
-    </style>
-    <script src="../static/js/plugins/wangeditor.js"></script>
-    <div id="editor-wrapper">
-        <div id="toolbar-container"><!-- 工具栏 --></div>
-        <div id="editor-container"><!-- 编辑器 --></div>
-    </div>
-    <div id="submit_answer_block">
-        <span><button id="submit_answer_button">发布</button></span>
-        <span id="submit_answer_msg"></span>
-    </div>
-    <textarea id="editor-content"></textarea>
-    <script>
-        $(document).ready(function() {
-            $("#editor-wrapper").hide();
-            $("#submit_answer_block").hide();
-            $("#editor-content").hide();
-        });
-    </script>
-
-    <hr>
     <div id="answers_to_the_question">
     </div>
     `);
@@ -270,8 +296,8 @@ $(document).ready(function() {
         if (!login_state) {
             alert("您还未登录哦~");
         } else {
-            $("#editor-wrapper").show();
-            $("#submit_answer_block").show();
+            $("#editor-wrapper").slideDown("slow");
+            $("#submit_answer_block").slideDown("slow");
         }
         return false;
     });
@@ -320,16 +346,17 @@ $(document).ready(function() {
                     let like_num = resp[i + 6];
                     let comment_num = resp[i + 7];
                     $("#answers_to_the_question").append(`
-                    <div>
-                        <div>
-                            <span><a href="/user/${uid}"><img src="${head}" height="40" width="40" style="border-radius: 10%;"></a></span>
-                            <span>${username}</span>
+                    <div class="question_answers">
+                        <div style="display: flex; align-items: center;">
+                            <span style="display: inline-flex; align-items: center;"><a href="/user/${uid}"><img src="${head}" height="40" width="40" style="border-radius: 10%;"></a></span>
+                            &nbsp&nbsp&nbsp
+                            <span style="display: inline-flex; align-items: center;">${username}</span>
                         </div>
                         <div id="editor-content-view" class="editor-content-view">
                             ${content}
                         </div>
-                        <div>
-                            <span>更新于 ${update_time}</span>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="margin-left: auto;">更新于 ${update_time}</span>
                         </div>
                         <div>
                             <div style="display: inline-block; width: 150px;">
@@ -361,7 +388,6 @@ $(document).ready(function() {
                             });
                         </script>
                     </div>
-                    <hr style="border: 0; padding: 2px; background: repeating-linear-gradient(135deg, #a2a9b6 0px, #a2a9b6 1px, transparent 1px, transparent 5px);">
                     `);
                     if (login_state) {
                         $.ajax({
@@ -451,7 +477,7 @@ $(document).ready(function() {
             $(`#comments_to_answer_${answerid}`).empty();
             $.ajax({
                 async: false, // 重要，防止slideDown卡顿
-                url: "/service/getallcomment",
+                url: "/service/getallcomment/answer",
                 type: "get",
                 data: { "answerid": answerid },
                 success: function(resp) {
@@ -472,12 +498,15 @@ $(document).ready(function() {
                             let issue_time = resp[i + 4];
                             $(`#comments_to_answer_${answerid}`).append(`
                             <div>
-                                <div>
-                                    <span><a href="/user/${userid}"><img src="${head}" height="30" width="30" style="border-radius: 10%;"></a></span>
-                                    <span>${username}</span>
-                                    <div style="display: inline-block;" class="editor-content-view-for-comment">${content}</div>
-                                    <span>${issue_time}</span>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="display: flex; align-items: center;">
+                                        <span style="display: inline-flex; align-items: center;"><a href="/user/${userid}"><img src="${head}" height="30" width="30" style="border-radius: 10%;"></a></span>
+                                        &nbsp&nbsp&nbsp
+                                        <span style="display: inline-flex; align-items: center;">${username}</span>
+                                    </div>
+                                    <span style="margin-left: auto;">${issue_time}</span>
                                 </div>
+                                <div>${content}</div>
                             </div>
                             `);
                         }
@@ -566,8 +595,7 @@ $(document).ready(function() {
 
                             $(`#comments_to_answer_${answerid}`).empty();
                             $.ajax({
-                                async: false, // 重要，防止slideDown卡顿
-                                url: "/service/getallcomment",
+                                url: "/service/getallcomment/answer",
                                 type: "get",
                                 data: { "answerid": answerid },
                                 success: function(resp) {
@@ -588,12 +616,15 @@ $(document).ready(function() {
                                             let issue_time = resp[i + 4];
                                             $(`#comments_to_answer_${answerid}`).append(`
                                             <div>
-                                                <div>
-                                                    <span><a href="/user/${userid}"><img src="${head}" height="25" width="25"></a></span>
-                                                    <span>${username}</span>
-                                                    <div style="display: inline-block;" class="editor-content-view">${content}</div>
-                                                    <span>${issue_time}</span>
+                                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                                    <div style="display: flex; align-items: center;">
+                                                        <span style="display: inline-flex; align-items: center;"><a href="/user/${userid}"><img src="${head}" height="30" width="30" style="border-radius: 10%;"></a></span>
+                                                        &nbsp&nbsp&nbsp
+                                                        <span style="display: inline-flex; align-items: center;">${username}</span>
+                                                    </div>
+                                                    <span style="margin-left: auto;">${issue_time}</span>
                                                 </div>
+                                                <div>${content}</div>
                                             </div>
                                             `);
                                         }

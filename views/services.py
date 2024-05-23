@@ -78,7 +78,7 @@ class Upload_imgServiceView(MethodView):
         userid = session.get('userid')
 
         img = None
-        if item == 'assets_answer':
+        if item == 'assets_answer' or item == 'assets_article':
             img = request.files.get('wangeditor-uploaded-image')
         else:
             img = request.files.get('file')
@@ -114,29 +114,6 @@ class City_listServiceView(MethodView):
             ret += str(item['cityid']) + ' ' + item['cityname'] + ' '
         ret = ret[0 : -1]
         return ret, 200
-
-class QuestioninfoServiceView(MethodView):
-    def get(self):
-        questionid = int(request.args.get('questionid'))
-
-        sql = '''select user.userid as 'userid', username, head, title, description, issue_time, views
-        from user, question
-        where user.userid = question.userid and questionid = %s'''
-        values = (questionid)
-        res = query(sql, values)
-        follow_num = query("select count(*) as 'follow_num' from follow_question where questionid = %s", (questionid))[0]['follow_num']
-        answer_num = query("select count(*) as 'answer_num' from answer where questionid = %s", (questionid))[0]['answer_num']
-        return jsonify({
-            "userid": res[0]['userid'],
-            "username": res[0]['username'],
-            "head": res[0]['head'],
-            "title": res[0]['title'],
-            "description": res[0]['description'],
-            "issue_time": res[0]['issue_time'],
-            "views": res[0]['views'],
-            "follow_num": follow_num,
-            "answer_num": answer_num
-        }), 200
 
 class UserassetServiceView(MethodView):
     def get(self, asset):
@@ -199,7 +176,7 @@ class MatchingServiceView(MethodView):
                     ret += item['head'] + magic_split_flag
                     ret += str(item['questionid']) + magic_split_flag
                     ret += item['title'] + magic_split_flag
-                    ret += str(item['issue_time']) + magic_split_flag
+                    ret += str(item['issue_time'].date()) + magic_split_flag
                     ret += str(item['views']) + magic_split_flag
                     answer_num = query("select count(*) as 'answer_num' from answer where questionid = %s", (item['questionid']))[0]['answer_num']
                     ret += str(answer_num) + magic_split_flag
@@ -210,7 +187,7 @@ class MatchingServiceView(MethodView):
                     ret += item['head'] + magic_split_flag
                     ret += str(item['articleid']) + magic_split_flag
                     ret += item['title'] + magic_split_flag
-                    ret += str(item['update_time']) + magic_split_flag
+                    ret += str(item['update_time'].date()) + magic_split_flag
                     ret += str(item['views']) + magic_split_flag
                     like_num = query("select count(*) as 'like_num' from like_article where articleid = %s", (item['articleid']))[0]['like_num']
                     ret += str(like_num) + magic_split_flag
@@ -245,7 +222,7 @@ class MatchingServiceView(MethodView):
                     ret += item['head'] + magic_split_flag
                     ret += str(item['questionid']) + magic_split_flag
                     ret += item['title'] + magic_split_flag
-                    ret += str(item['issue_time']) + magic_split_flag
+                    ret += str(item['issue_time'].date()) + magic_split_flag
                     ret += str(item['views']) + magic_split_flag
                     answer_num = query("select count(*) as 'answer_num' from answer where questionid = %s", (item['questionid']))[0]['answer_num']
                     ret += str(answer_num) + magic_split_flag
@@ -256,13 +233,36 @@ class MatchingServiceView(MethodView):
                     ret += item['head'] + magic_split_flag
                     ret += str(item['articleid']) + magic_split_flag
                     ret += item['title'] + magic_split_flag
-                    ret += str(item['update_time']) + magic_split_flag
+                    ret += str(item['update_time'].date()) + magic_split_flag
                     ret += str(item['views']) + magic_split_flag
                     like_num = query("select count(*) as 'like_num' from like_article where articleid = %s", (item['articleid']))[0]['like_num']
                     ret += str(like_num) + magic_split_flag
                 res.pop(item_idx)
             ret = ret[0 : -4]
             return ret, 200
+
+class QuestioninfoServiceView(MethodView):
+    def get(self):
+        questionid = int(request.args.get('questionid'))
+
+        sql = '''select user.userid as 'userid', username, head, title, description, issue_time, views
+        from user, question
+        where user.userid = question.userid and questionid = %s'''
+        values = (questionid)
+        res = query(sql, values)
+        follow_num = query("select count(*) as 'follow_num' from follow_question where questionid = %s", (questionid))[0]['follow_num']
+        answer_num = query("select count(*) as 'answer_num' from answer where questionid = %s", (questionid))[0]['answer_num']
+        return jsonify({
+            "userid": res[0]['userid'],
+            "username": res[0]['username'],
+            "head": res[0]['head'],
+            "title": res[0]['title'],
+            "description": res[0]['description'],
+            "issue_time": str(res[0]['issue_time'].date()),
+            "views": res[0]['views'],
+            "follow_num": follow_num,
+            "answer_num": answer_num
+        }), 200
 
 class Check_follow_questionServiceView(MethodView):
     def get(self):
@@ -326,7 +326,7 @@ class Get_all_answerServiceView(MethodView):
                 ret += res[0]['head'] + magic_split_flag
                 ret += str(res[0]['answerid']) + magic_split_flag
                 ret += res[0]['content'] + magic_split_flag
-                ret += str(res[0]['update_time']) + magic_split_flag
+                ret += str(res[0]['update_time'].date()) + magic_split_flag
                 answerid = res[0]['answerid']
                 res = query("select count(*) as 'like_num' from like_answer where answerid = %s", (answerid))
                 ret += str(res[0]['like_num']) + magic_split_flag
@@ -350,7 +350,7 @@ class Get_all_answerServiceView(MethodView):
             ret += item['head'] + magic_split_flag
             ret += str(item['answerid']) + magic_split_flag
             ret += item['content'] + magic_split_flag
-            ret += str(item['update_time']) + magic_split_flag
+            ret += str(item['update_time'].date()) + magic_split_flag
             answerid = item['answerid']
             res = query("select count(*) as 'like_num' from like_answer where answerid = %s", (answerid))
             ret += str(res[0]['like_num']) + magic_split_flag
@@ -392,27 +392,50 @@ class Unlike_answerServiceView(MethodView): # poor grammar..
             return "", 400
 
 class Get_all_commentServiceView(MethodView):
-    def get(self):
-        answerid = int(request.args.get('answerid'))
+    def get(self, item):
+        if item == 'answer':
+            answerid = int(request.args.get('answerid'))
 
-        magic_split_flag = ''
-        for i in range(4):
-            magic_split_flag += chr(random.randint(0, 25) + 65)
-        ret = magic_split_flag
+            magic_split_flag = ''
+            for i in range(4):
+                magic_split_flag += chr(random.randint(0, 25) + 65)
+            ret = magic_split_flag
 
-        res = query('''select user.userid as 'userid', username, head, content, issue_time
-        from user, comment_to_answer
-        where user.userid = comment_to_answer.userid and comment_to_answer.answerid = %s
-        order by issue_time desc''', (answerid))
-        for item in res:
-            ret += str(item['userid']) + magic_split_flag
-            ret += item['username'] + magic_split_flag
-            ret += item['head'] + magic_split_flag
-            ret += item['content'] + magic_split_flag
-            ret += str(item['issue_time'].date()) + magic_split_flag
+            res = query('''select user.userid as 'userid', username, head, content, issue_time
+            from user, comment_to_answer
+            where user.userid = comment_to_answer.userid and comment_to_answer.answerid = %s
+            order by issue_time desc''', (answerid))
+            for item in res:
+                ret += str(item['userid']) + magic_split_flag
+                ret += item['username'] + magic_split_flag
+                ret += item['head'] + magic_split_flag
+                ret += item['content'] + magic_split_flag
+                ret += str(item['issue_time'].date()) + magic_split_flag
+            
+            ret = ret[0 : -4]
+            return ret, 200
         
-        ret = ret[0 : -4]
-        return ret, 200
+        elif item == 'article':
+            articleid = int(request.args.get('articleid'))
+
+            magic_split_flag = ''
+            for i in range(4):
+                magic_split_flag += chr(random.randint(0, 25) + 65)
+            ret = magic_split_flag
+
+            res = query('''select user.userid as 'userid', username, head, content, issue_time
+            from user, comment_to_article
+            where user.userid = comment_to_article.userid and comment_to_article.articleid = %s
+            order by issue_time desc''', (articleid))
+            for item in res:
+                ret += str(item['userid']) + magic_split_flag
+                ret += item['username'] + magic_split_flag
+                ret += item['head'] + magic_split_flag
+                ret += item['content'] + magic_split_flag
+                ret += str(item['issue_time'].date()) + magic_split_flag
+
+            ret = ret[0 : -4]
+            return ret, 200
 
 class Submit_commentServiceView(MethodView):
     def post(self, item):
@@ -427,4 +450,74 @@ class Submit_commentServiceView(MethodView):
             return "", 400
         
         elif item == 'article':
-            pass
+            articleid = int(request.form.get('articleid'))
+            content = request.form.get('content')
+
+            if insert("insert into comment_to_article(userid, articleid, content, issue_time) values (%s, %s, %s, now())", (userid, articleid, content)):
+                return "", 200
+            return "", 400
+
+class ArticleinfoServiceView(MethodView):
+    def get(self):
+        articleid = int(request.args.get('articleid'))
+
+        sql = '''select user.userid as 'userid', username, head, title, content, update_time, views
+        from user, article
+        where user.userid = article.userid and articleid = %s'''
+        values = (articleid)
+        res = query(sql, values)
+        like_num = query("select count(*) as 'like_num' from like_article where articleid = %s", (articleid))[0]['like_num']
+        comment_num = query("select count(*) as 'comment_num' from comment_to_article where articleid = %s", (articleid))[0]['comment_num']
+        return jsonify({
+            "userid": res[0]['userid'],
+            "username": res[0]['username'],
+            "head": res[0]['head'],
+            "title": res[0]['title'],
+            "content": res[0]['content'],
+            "update_time": str(res[0]['update_time'].date()),
+            "views": res[0]['views'],
+            "like_num": like_num,
+            "comment_num": comment_num
+        }), 200
+
+class Check_is_my_articleServiceView(MethodView):
+    def get(self):
+        userid = session.get('userid')
+        articleid = int(request.args.get('articleid'))
+
+        res = query("select userid from article where articleid = %s", (articleid))[0]['userid']
+        if res == userid:
+            return "1", 200
+        else:
+            return "0", 200
+
+class Check_like_articleServiceView(MethodView):
+    def get(self):
+        userid = session.get('userid')
+        articleid = int(request.args.get('articleid'))
+
+        res = query("select count(*) as 'count' from like_article where userid = %s and articleid = %s", (userid, articleid))[0]['count']
+        if res == 1:
+            return "1", 200
+        else:
+            return "0", 200
+
+class Like_articleServiceView(MethodView):
+    def get(self):
+        userid = session.get('userid')
+        articleid = int(request.args.get('articleid'))
+
+        if insert("insert into like_article values (%s, %s, now())", (userid, articleid)):
+            return "", 200
+        else:
+            return "", 400
+
+class Unlike_articleServiceView(MethodView):
+    def get(self):
+        userid = session.get('userid')
+        articleid = int(request.args.get('articleid'))
+
+        if delete("delete from like_article where userid = %s and articleid = %s", (userid, articleid)):
+            return "", 200
+        else:
+            return "", 400

@@ -47,10 +47,13 @@ $(document).ready(function() {
                 }
                 $("#hotspot_block").append(`
                 <div>
-                    <div>
-                        <span><a href="/user/${userid}"><img src="${head}" height="40" width="40" style="border-radius: 10%;"></a></span>
-                        <span>${username}</span>
-                        <span><img src="/static/img/${type_msg["en"]}.svg" alt="${type_msg["zh"]}" height="20" width="20"></span>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; align-items: center;">
+                            <span style="display: inline-flex; align-items: center;"><a href="/user/${userid}"><img src="${head}" height="40" width="40" style="border-radius: 10%;"></a></span>
+                            &nbsp&nbsp&nbsp
+                            <span style="display: inline-flex; align-items: center;">${username}</span>
+                        </div>
+                        <span style="margin-left: auto;"><img src="/static/img/${type_msg["en"]}.svg" alt="${type_msg["zh"]}" height="20" width="20"></span>
                     </div>
                     <div>
                         <span><a href="/${type_msg["en"]}/${assetid}">${title}</a></span>
@@ -110,10 +113,13 @@ $(document).ready(function() {
                 }
                 $("#newspot_block").append(`
                 <div>
-                    <div>
-                        <span><a href="/user/${userid}"><img src="${head}" height="40" width="40" style="border-radius: 10%;"></a></span>
-                        <span>${username}</span>
-                        <span><img src="/static/img/${type_msg["en"]}.svg" alt="${type_msg["zh"]}" height="20" width="20"></span>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; align-items: center;">
+                            <span style="display: inline-flex; align-items: center;"><a href="/user/${userid}"><img src="${head}" height="40" width="40" style="border-radius: 10%;"></a></span>
+                            &nbsp&nbsp&nbsp
+                            <span style="display: inline-flex; align-items: center;">${username}</span>
+                        </div>
+                        <span style="margin-left: auto;"><img src="/static/img/${type_msg["en"]}.svg" alt="${type_msg["zh"]}" height="20" width="20"></span>
                     </div>
                     <div>
                         <span><a href="/${type_msg["en"]}/${assetid}">${title}</a></span>

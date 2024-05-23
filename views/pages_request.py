@@ -238,7 +238,7 @@ class Edit_questionPageView(MethodView):
         if insert(sql, values):
             questionid = query("select max(questionid) as 'questionid' from question", ())[0]['questionid']
             return str(questionid), 200
-        return "0", 200
+        return "", 400
 
 class QuestionPageView(MethodView):
     def get(self, questionid):
@@ -264,3 +264,48 @@ class QuestionPageView(MethodView):
             if insert(sql, values):
                 return "", 200
             return "", 400
+
+class Edit_articlePageView(MethodView):
+    def get(self):
+        if session.get('username') is None:
+            return redirect('/')
+        return render_template('/general.html')
+    
+    def post(self):
+        userid = session.get('userid')
+        title = request.form.get('title')
+        content = request.form.get('content')
+
+        sql = "insert into article(userid, title, content, issue_time, update_time) values (%s, %s, %s, now(), now())"
+        values = (userid, title, content)
+        if insert(sql, values):
+            articleid = query("select max(articleid) as 'articleid' from article", ())[0]['articleid']
+            return str(articleid), 200
+        return "", 400
+
+class ArticlePageView(MethodView):
+    def get(self, articleid):
+        articleid = int(articleid)
+
+        update("update article set views = views + 1 where articleid = %s", (articleid))
+        return render_template('/general.html')
+
+class Update_articlePageView(MethodView):
+    def get(self, articleid):
+        userid = session.get('userid')
+        articleid = int(articleid)
+
+        if userid is None:
+            return redirect('/')
+        if query("select userid from article where articleid = %s", (articleid))[0]['userid'] != userid:
+            return redirect('/')
+        return render_template('/general.html')
+    
+    def post(self, articleid):
+        articleid = int(articleid)
+        title = request.form.get('title')
+        content = request.form.get('content')
+
+        if update("update article set title = %s, content = %s, update_time = now() where articleid = %s", (title, content, articleid)):
+            return "", 200
+        return "", 400

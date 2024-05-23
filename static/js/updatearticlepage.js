@@ -1,4 +1,22 @@
+var url = window.location.pathname.split("/");
+var articleid = url[url.length - 1];
+var title;
+var content;
+
 $(document).ready(function() {
+    $.ajax({
+        async: false,
+        url: "/service/articleinfo",
+        type: "get",
+        data: { "articleid": articleid },
+        success: function(resp) {
+            title = resp.title;
+            content = resp.content;
+        }
+    });
+
+    $("title").prepend("编辑 - " + title.slice(3, -4) + " - ");
+
     $("main").append(`
     <div>
         <link rel="stylesheet" href="../static/css/wangeditor.css">
@@ -40,7 +58,7 @@ $(document).ready(function() {
                 
                     let editor = createEditor({
                         selector: '#editor-container-title',
-                        html: '<p><br></p>',
+                        html: title,
                         config: editorConfig,
                         mode: 'simple' // or 'default'
                     })
@@ -101,7 +119,7 @@ $(document).ready(function() {
     
         let editor = createEditor({
             selector: '#editor-container-content',
-            html: '<p><br></p>',
+            html: content,
             config: editorConfig,
             mode: 'simple' // or 'default'
         })
@@ -170,5 +188,42 @@ $(document).ready(function() {
             config: toolbarConfig,
             mode: 'default' // or 'simple'
         })
+    });
+
+    let old_title = title;
+    $("#submit_button").click(function() {
+        let title = $("#editor-content-title").val();
+        let content = $("#editor-content-content").val();
+        if (title === "") {
+            title = old_title;
+        }
+        if (title === "<p><br></p>") {
+            $("#submit_msg").empty();
+            $("#submit_msg").append("标题不能为空");
+        } else if (content === "" || content === "<p><br></p>") {
+            $("#submit_msg").empty();
+            $("#submit_msg").append("正文不能为空");
+        } else if (title.length > 100) {
+            $("#submit_msg").empty();
+            $("#submit_msg").append("标题过长");
+        } else {
+            $.ajax({
+                url: "/update_article/" + articleid,
+                type: "post",
+                data: {
+                    "title": title,
+                    "content": content
+                },
+                success: function() {
+                    $("#submit_msg").empty();
+                    $("#submit_msg").append("发布成功");
+                    location.assign("/article/" + articleid);
+                },
+                error: function() {
+                    $("#submit_msg").empty();
+                    $("#submit_msg").append("请稍后再试");
+                }
+            });
+        }
     });
 });

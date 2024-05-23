@@ -51,7 +51,7 @@ create table answer (
 create table article (
     articleid int primary key auto_increment,
     userid int not null,
-    title varchar(100) not null,
+    title varchar(105) not null,
     content text not null,
     issue_time datetime not null,
     update_time datetime not null,
@@ -158,7 +158,7 @@ set questionid = new.questionid;
 insert into follow_question values (userid, questionid, now());
 end;;
 
-create trigger before_update_answer before update on answer
+create trigger before_update_article before update on article
 for each row
 begin
 set new.update_time = now();
