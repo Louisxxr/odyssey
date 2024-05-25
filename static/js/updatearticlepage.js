@@ -15,7 +15,7 @@ $(document).ready(function() {
         }
     });
 
-    $("title").prepend("编辑 - " + title.slice(3, -4) + " - ");
+    $("title").prepend("写文章 - " + title.slice(3, -4) + " - ");
 
     $("main").append(`
     <div>

@@ -1,8 +1,23 @@
 $(document).ready(function() {
     $("main").append(`
-    <div>
-        <span id="hotspot_button" style="cursor:pointer;">热门</span>
-        <span id="newspot_button" style="cursor:pointer;">最近</span>
+    <style>
+        main a {
+            text-decoration: none;
+            color: black;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        main hr {
+            border: 0;
+            height: 1px;
+            background: #ddd;
+        }
+    </style>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="height: 50px; margin-left: auto;">
+            <div id="hotspot_button" style="cursor:pointer; display: inline-block; font-size: 20px; height: 40px; width: 100px; text-align: center; line-height: 40px;">热门</div>
+            <div id="newspot_button" style="cursor:pointer; display: inline-block; font-size: 20px; height: 40px; width: 100px; text-align: center; line-height: 40px;">最近</div>
+        </div>
     </div>
     <div id="hotspot_block">
         热门...
@@ -12,7 +27,8 @@ $(document).ready(function() {
     </div>
     <script>
         $(document).ready(function() {
-            $("#hotspot_button").css("background-color", "grey");
+            $("#hotspot_button").css("background-color", "#002fa7");
+            $("#hotspot_button").css("color", "white");
             $("#newspot_block").hide();
         });
     </script>
@@ -62,22 +78,28 @@ $(document).ready(function() {
                 `);
                 if (type === "0") {
                     $("#hotspot_block").append(`
-                    <div>
-                        <span>${update_time}</span>
-                        <span><img src="/static/img/view.svg" alt="浏览量" height="15" width="15"></span>
-                        <span>${views}</span>
-                        <span>共 ${answer_or_like_num} 条回答</span>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="margin-right: auto;">${update_time}</span>
+                        <div style="margin-left: auto;">
+                            <span>共 ${answer_or_like_num} 条回答</span>
+                            <span><img src="/static/img/view.svg" alt="浏览量" height="15" width="15"></span>
+                            <span>${views}</span>
+                        </div>
                     </div>
+                    <hr>
                     `);
                 } else {
                     $("#hotspot_block").append(`
-                    <div>
-                        <span>${update_time}</span>
-                        <span><img src="/static/img/view.svg" alt="浏览量" height="15" width="15"></span>
-                        <span>${views}</span>
-                        <span><img src="/static/img/like.svg" alt="喜欢" height="15" width="15"></span>
-                        <span>${answer_or_like_num}</span>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="margin-right: auto;">更新于 ${update_time}</span>
+                        <div style="margin-left: auto;">
+                            <span><img src="/static/img/like.svg" alt="喜欢" height="15" width="15"></span>
+                            <span>${answer_or_like_num}</span>
+                            <span><img src="/static/img/view.svg" alt="浏览量" height="15" width="15"></span>
+                            <span>${views}</span>
+                        </div>
                     </div>
+                    <hr>
                     `);
                 }
             }
@@ -128,22 +150,28 @@ $(document).ready(function() {
                 `);
                 if (type === "0") {
                     $("#newspot_block").append(`
-                    <div>
-                        <span>${update_time}</span>
-                        <span><img src="/static/img/view.svg" alt="浏览量" height="15" width="15"></span>
-                        <span>${views}</span>
-                        <span>共 ${answer_or_like_num} 条回答</span>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="margin-right: auto;">${update_time}</span>
+                        <div style="margin-left: auto;">
+                            <span>共 ${answer_or_like_num} 条回答</span>
+                            <span><img src="/static/img/view.svg" alt="浏览量" height="15" width="15"></span>
+                            <span>${views}</span>
+                        </div>
                     </div>
+                    <hr>
                     `);
                 } else {
                     $("#newspot_block").append(`
-                    <div>
-                        <span>${update_time}</span>
-                        <span><img src="/static/img/view.svg" alt="浏览量" height="15" width="15"></span>
-                        <span>${views}</span>
-                        <span><img src="/static/img/like.svg" alt="喜欢" height="15" width="15"></span>
-                        <span>${answer_or_like_num}</span>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="margin-right: auto;">更新于 ${update_time}</span>
+                        <div style="margin-left: auto;">
+                            <span><img src="/static/img/like.svg" alt="喜欢" height="15" width="15"></span>
+                            <span>${answer_or_like_num}</span>
+                            <span><img src="/static/img/view.svg" alt="浏览量" height="15" width="15"></span>
+                            <span>${views}</span>
+                        </div>
                     </div>
+                    <hr>
                     `);
                 }
             }
@@ -151,15 +179,19 @@ $(document).ready(function() {
     });
 
     $("#hotspot_button").click(function() {
-        $("#hotspot_button").css("background-color", "grey");
+        $("#hotspot_button").css("background-color", "#002fa7");
+        $("#hotspot_button").css("color", "white");
         $("#newspot_button").css("background-color", "white");
+        $("#newspot_button").css("color", "black");
         $("#hotspot_block").show();
         $("#newspot_block").hide();
     });
 
     $("#newspot_button").click(function() {
         $("#hotspot_button").css("background-color", "white");
-        $("#newspot_button").css("background-color", "grey");
+        $("#hotspot_button").css("color", "black");
+        $("#newspot_button").css("background-color", "#002fa7");
+        $("#newspot_button").css("color", "white");
         $("#hotspot_block").hide();
         $("#newspot_block").show();
     });

@@ -2,29 +2,59 @@ var email_pattern = /^([A-Za-z0-9_\-\.])+\@(qq\.com|163\.com|sina\.com|sina\.cn|
 
 $(document).ready(function() {
     $("main").append(`
+    <style>
+        body > main {
+            background-color: rgba(255, 255, 255, 15%);
+            border-radius: 10px;
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: 40%;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: #002fa7;
+            box-shadow: 0 0 8px rgba(00, 47, 167, 0.3);
+        }
+        input[type="text"]::placeholder,
+        input[type="password"]::placeholder {
+            color: #999;
+            font-style: italic;
+        }
+    </style>
     <div>
-        <div>
-            注册
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="color: white; font-size: 48px; font-weight: bold; margin-left: auto;">注册</div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="color: white; font-size: 20px; font-weight: bold; margin-left: auto;">欢迎来到<span style="color: #002fa7;">Odyssey</span>👋</div>
         </div>
         <div>
-            <span>邮箱：<input type="text" id="email"></span>
-            <span><button id="send_authcode_button">发送验证码</button></span>
-            <span id="send_state_msg"></span>
+            <input type="text" id="email" placeholder="邮箱">
+            <button id="send_authcode_button">发送验证码</button>
+            <span id="send_state_msg" style="color: brown;"></span>
         </div>
         <div>
-            验证码：<input type="text" id="authcode">
+            <input type="text" id="authcode" placeholder="验证码">
         </div>
         <div>
-            用户名：<input type="text" id="username">
+            <input type="text" id="username" placeholder="用户名">
         </div>
         <div>
-            密码：<input type="password" id="password">
+            <input type="password" id="password" placeholder="密码">
         </div>
         <div>
-            确认密码：<input type="password" id="confirm_password">
+            <input type="password" id="confirm_password" placeholder="确认密码">
         </div>
         <div>
-            <span id="register_errormsg"></span>
+            <span id="register_errormsg" style="color: brown;">&nbsp</span>
         </div>
         <div>
             <button id="register_button">注册</button>

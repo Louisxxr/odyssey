@@ -2,15 +2,50 @@ var email_pattern = /^([A-Za-z0-9_\-\.])+\@(qq\.com|163\.com|sina\.com|sina\.cn|
 
 $(document).ready(function() {
     $("main").append(`
+    <style>
+        input[type="text"],
+        input[type="password"] {
+            width: 40%;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: #002fa7;
+            box-shadow: 0 0 8px rgba(00, 47, 167, 0.3);
+        }
+        input[type="text"]::placeholder,
+        input[type="password"]::placeholder {
+            color: #999;
+            font-style: italic;
+        }
+        select {
+            width: 10%;
+            padding: 4px 10px 10px 10px;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            height: 40px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+    </style>
     <div>
-        <div>
-            <span>编辑个人资料</span>
-            <span><a href="/homepage">返回我的主页</a></span>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="color: black; font-size: 48px; font-weight: bold; margin-left: auto;">编辑个人资料</div>
         </div>
-        <div>
-            <span>修改头像：<input type="file" accept="image/*" id="select_head"></span>
-            <span><button id="upload_head">保存</button></span>
-            <span id="upload_head_errormsg"></span>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="margin-left: auto;"><a href="/homepage">返回我的主页</a></span>
+        </div>
+        <div style="height: 50px;">
+            <span style="color: black; font-style: italic;">修改头像&emsp;&emsp;</span><input type="file" accept="image/*" id="select_head">
+            <button id="upload_head">保存</button>
+            <span id="upload_head_errormsg" style="color: red;"></span>
             <script>
                 $(document).ready(function() {
                     $("#upload_head").hide();
@@ -18,9 +53,9 @@ $(document).ready(function() {
             </script>
         </div>
         <div>
-            <span>修改用户名：<input type="text" id="fillin_username"></span>
-            <span><button id="upload_username">保存</button></span>
-            <span id="upload_username_errormsg"></span>
+            <input type="text" id="fillin_username" placeholder="用户名">
+            <button id="upload_username">保存</button>
+            <span id="upload_username_errormsg" style="color: red;"></span>
             <script>
                 $(document).ready(function() {
                     $("#upload_username").hide();
@@ -29,14 +64,14 @@ $(document).ready(function() {
         </div>
         <div>
             <div>
-                <span>修改邮箱：<input type="text" id="fillin_email"></span>
-                <span><button id="send_authcode">发送验证码</button></span>
-                <span id="send_authcode_errormsg"></span>
+                <input type="text" id="fillin_email" placeholder="邮箱">
+                <button id="send_authcode">发送验证码</button>
+                <span id="send_authcode_errormsg" style="color: red;"></span>
             </div>
             <div id="authcode_block">
-                <span>验证码：<input type="text" id="fillin_authcode"></span>
-                <span><button id="upload_email_authcode">保存</button></span>
-                <span id="upload_email_authcode_errormsg"></span>
+                <input type="text" id="fillin_authcode" placeholder="验证码">
+                <button id="upload_email_authcode">保存</button>
+                <span id="upload_email_authcode_errormsg" style="color: red;"></span>
             </div>
             <script>
                 $(document).ready(function() {
@@ -45,15 +80,14 @@ $(document).ready(function() {
                 })
             </script>
         </div>
-        <div>
-            <span>性别：
-                <select id="select_sex">
-                    <option value="M">男</option>
-                    <option value="W">女</option>
-                </select>
-            </span>
-            <span><button id="upload_sex">保存</button></span>
-            <span id="upload_sex_errormsg"></span>
+        <div style="height: 50px;">
+            <span style="color: black; font-style: italic;">性别&emsp;&emsp;&emsp;</span>
+            <select id="select_sex">
+                <option value="M">男</option>
+                <option value="W">女</option>
+            </select>
+            <button id="upload_sex">保存</button>
+            <span id="upload_sex_errormsg" style="color: red;"></span>
             <script>
                 $(document).ready(function() {
                     $("#upload_sex").hide();
@@ -62,30 +96,32 @@ $(document).ready(function() {
         </div>
         <div>
             <link rel="stylesheet" href="../static/css/xs-date.css">
-            <span>生日：<input type="text" id="select_birthday" readonly="readonly"></span>
-            <span><button id="upload_birthday">保存</button></span>
-            <span id="upload_birthday_errormsg"></span>
+            <input type="text" id="select_birthday" readonly="readonly" placeholder="生日">
+            <button id="upload_birthday">保存</button>
+            <span id="upload_birthday_errormsg" style="color: red;"></span>
 
-            <div class="xs-date">
-                <div class="xs-date-title">
-                    <div class="date-year-prev"> << </div>
-					<div class="date-prev"> < </div>
-					<div class="date-time"></div>
-					<div class="date-next"> > </div>
-					<div class="date-year-next"> >> </div>
-				</div>
-				<div class="xs-date-week">
-					<div>日</div>
-					<div>一</div>
-					<div>二</div>
-					<div>三</div>
-					<div>四</div>
-					<div>五</div>
-					<div>六</div>
-				</div>
-				<div class="xs-date-day">
-				</div>
-			</div>
+            <div style="position: relative;">
+                <div class="xs-date">
+                    <div class="xs-date-title">
+                        <div class="date-year-prev"> << </div>
+                        <div class="date-prev"> < </div>
+                        <div class="date-time"></div>
+                        <div class="date-next"> > </div>
+                        <div class="date-year-next"> >> </div>
+                    </div>
+                    <div class="xs-date-week">
+                        <div>日</div>
+                        <div>一</div>
+                        <div>二</div>
+                        <div>三</div>
+                        <div>四</div>
+                        <div>五</div>
+                        <div>六</div>
+                    </div>
+                    <div class="xs-date-day">
+                    </div>
+                </div>
+            </div>
 
 			<script>
                 let date_time = document.querySelector(".date-time");
@@ -194,9 +230,9 @@ $(document).ready(function() {
 			</script>
         </div>
         <div>
-            <span>个性签名：<input type="text" id="fillin_signature"></span>
-            <span><button id="upload_signature">保存</button></span>
-            <span id="upload_signature_errormsg"></span>
+            <input type="text" id="fillin_signature" placeholder="个性签名">
+            <button id="upload_signature">保存</button>
+            <span id="upload_signature_errormsg" style="color: red;"></span>
             <script>
                 $(document).ready(function() {
                     $("#upload_signature").hide();
@@ -204,12 +240,11 @@ $(document).ready(function() {
             </script>
         </div>
         <div>
-            <span>所在地：
-                <select id="select_province"></select>
-                <select id="select_city"></select>
-            </span>
-            <span><button id="upload_city">保存</button></span>
-            <span id="upload_city_errormsg"></span>
+        <span style="color: black; font-style: italic;">所在地&emsp;&emsp;</span>
+            <select id="select_province"></select>
+            <select id="select_city"></select>
+            <button id="upload_city">保存</button>
+            <span id="upload_city_errormsg" style="color: red;"></span>
             <script>
                 $(document).ready(function() {
                     $("#upload_city").hide();
@@ -217,9 +252,9 @@ $(document).ready(function() {
             </script>
         </div>
         <div>
-            <span>职业：<input type="text" id="fillin_job"></span>
-            <span><button id="upload_job">保存</button></span>
-            <span id="upload_job_errormsg"></span>
+            <input type="text" id="fillin_job" placeholder="职业">
+            <button id="upload_job">保存</button>
+            <span id="upload_job_errormsg" style="color: red;"></span>
             <script>
                 $(document).ready(function() {
                     $("#upload_job").hide();
@@ -231,19 +266,19 @@ $(document).ready(function() {
         </div>
         <div id="update_password_block">
             <div>
-                <span>原密码：<input type="password" id="fillin_old_password"></span>
+                <input type="password" id="fillin_old_password" placeholder="原密码">
             </div>
             <div>
-                <span>新密码：<input type="password" id="fillin_new_password"></span>
+                <input type="password" id="fillin_new_password" placeholder="新密码">
             </div>
             <div>
-                <span>确认密码：<input type="password" id="fillin_confirm_password"></span>
+                <input type="password" id="fillin_confirm_password" placeholder="确认密码">
             </div>
             <div>
-                <span id="update_password_errormsg"></span>
+                <span id="update_password_errormsg" style="color: red;">&nbsp</span>
             </div>
             <div>
-                <span><button id="update_password_save">保存</button></span>
+                <button id="update_password_save">保存</button>
             </div>
         </div>
         <script>

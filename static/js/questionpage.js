@@ -76,13 +76,16 @@ $(document).ready(function() {
         </div>
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <div style="margin-right: auto;">
-                <span id="follow_sign">共 ${question_info["follow_num"]} 人关注</span>
-                <span id="follow_button"></span>
+                <span>${question_info["issue_time"]}</span>
             </div>
             <div style="margin-left: auto;">
                 <span><img src="/static/img/view.svg" alt="浏览量" height="15" width="15"></span>
                 <span>${question_info["views"]}</span>
             </div>
+        </div>
+        <div>
+            <span id="follow_sign">共 ${question_info["follow_num"]} 人关注</span>
+            <span id="follow_button"></span>
         </div>
         <div>
             <span>共 ${question_info["answer_num"]} 条回答</span>
@@ -347,10 +350,13 @@ $(document).ready(function() {
                     let comment_num = resp[i + 7];
                     $("#answers_to_the_question").append(`
                     <div class="question_answers">
-                        <div style="display: flex; align-items: center;">
-                            <span style="display: inline-flex; align-items: center;"><a href="/user/${uid}"><img src="${head}" height="40" width="40" style="border-radius: 10%;"></a></span>
-                            &nbsp&nbsp&nbsp
-                            <span style="display: inline-flex; align-items: center;">${username}</span>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; margin-right: auto;">
+                                <span style="display: inline-flex; align-items: center;"><a href="/user/${uid}"><img src="${head}" height="40" width="40" style="border-radius: 10%;"></a></span>
+                                &nbsp&nbsp&nbsp
+                                <span style="display: inline-flex; align-items: center;">${username}</span>
+                            </div>
+                            <span style="margin-left: auto;"><a href="/user/${uid}">关注 Ta</a></span>
                         </div>
                         <div id="editor-content-view" class="editor-content-view">
                             ${content}

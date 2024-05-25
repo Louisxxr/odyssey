@@ -2,6 +2,7 @@ var url = window.location.pathname.split("/");
 var articleid = url[url.length - 1];
 var article_info = new Array();
 var login_state = false;
+var my_userid;
 
 $(document).ready(function() {
     $.ajax({
@@ -15,6 +16,7 @@ $(document).ready(function() {
             article_info["head"] = resp.head;
             article_info["title"] = resp.title;
             article_info["content"] = resp.content;
+            article_info["issue_time"] = resp.issue_time;
             article_info["update_time"] = resp.update_time;
             article_info["views"] = resp.views;
             article_info["like_num"] = resp.like_num;
@@ -31,23 +33,34 @@ $(document).ready(function() {
         success: function(resp) {
             if (resp !== "0") {
                 login_state = true;
+                $.ajax({
+                    async: false,
+                    url: "/service/userinfo",
+                    type: "get",
+                    success: function(resp) {
+                        my_userid = resp.userid;
+                    }
+                });
             }
         }
     });
 
     $("main").append(`
     <div>
-        <div style="display: flex; align-items: center;">
-            <span style="display: inline-flex; align-items: center;"><a href="/user/${article_info["userid"]}"><img src="${article_info["head"]}" height="40" width="40" style="border-radius: 10%;"></a></span>
-            &nbsp&nbsp&nbsp
-            <span style="display: inline-flex; align-items: center;">${article_info["username"]}</span>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; margin-right: auto;">
+                <span style="display: inline-flex; align-items: center;"><a href="/user/${article_info["userid"]}"><img src="${article_info["head"]}" height="40" width="40" style="border-radius: 10%;"></a></span>
+                &nbsp&nbsp&nbsp
+                <span style="display: inline-flex; align-items: center;">${article_info["username"]}</span>
+            </div>
+            <span style="margin-left: auto;"><a href="/user/${article_info["userid"]}">关注 Ta</a></span>
         </div>
         <div>
             <h1>${article_info["title"].slice(3, -4)}</h1>
         </div>
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <div style="margin-right: auto;">
-                <span>${article_info["update_time"]}</span>
+                <span>${article_info["issue_time"]}</span>
             </div>
             <div style="margin-left: auto;">
                 <span><img src="/static/img/view.svg" alt="浏览量" height="15" width="15"></span>
@@ -63,6 +76,9 @@ $(document).ready(function() {
         <div id="editor-content-view" class="editor-content-view">
             ${article_info["content"]}
         </div>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <span style="margin-left: auto;">更新于 ${article_info["update_time"]}</span>
     </div>
     <div>
         <div style="display: inline-block; width: 150px;">
@@ -97,19 +113,11 @@ $(document).ready(function() {
         $("#update_button").hide();
         $("#like_button_area").append('<img id="like_button" style="cursor:pointer;" src="/static/img/like.svg" alt="点赞" height="20" width="20">');
     } else {
-        $.ajax({
-            async: false,
-            url: "/service/checkismyarticle",
-            type: "get",
-            data: { "articleid": articleid },
-            success: function(resp) {
-                if (resp === "1") {
-                    $("#update_button").show();
-                } else {
-                    $("#update_button").hide();
-                }
-            }
-        });
+        if (article_info["userid"] === my_userid) {
+            $("#update_button").show();
+        } else {
+            $("#update_button").hide();
+        }
         $.ajax({
             async: false,
             url: "/service/checklikearticle",

@@ -2,26 +2,56 @@ var email_pattern = /^([A-Za-z0-9_\-\.])+\@(qq\.com|163\.com|sina\.com|sina\.cn|
 
 $(document).ready(function() {
     $("main").append(`
+    <style>
+        body > main {
+            background-color: rgba(255, 255, 255, 15%);
+            border-radius: 10px;
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: 40%;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: #002fa7;
+            box-shadow: 0 0 8px rgba(00, 47, 167, 0.3);
+        }
+        input[type="text"]::placeholder,
+        input[type="password"]::placeholder {
+            color: #999;
+            font-style: italic;
+        }
+    </style>
     <div>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="color: white; font-size: 48px; font-weight: bold; margin-left: auto;">找回密码</div>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="color: white; font-size: 14px; font-weight: bold; margin-left: auto;"><span style="color: #002fa7; font-size: 20px;">Odyssey</span>是一个<span style="color: #002fa7; font-size: 20px;">问答互动</span>和<span style="color: #002fa7; font-size: 20px;">文章分享</span>平台</div>
+    </div>
         <div>
-            忘记密码
+            <input type="text" id="email" placeholder="邮箱">
+            <button id="send_authcode_button">发送验证码</button>
+            <span id="send_state_msg" style="color: brown;"></span>
         </div>
         <div>
-            <span>邮箱：<input type="text" id="email"></span>
-            <span><button id="send_authcode_button">发送验证码</button></span>
-            <span id="send_state_msg"></span>
+            <input type="text" id="authcode" placeholder="验证码">
         </div>
         <div>
-            验证码：<input type="text" id="authcode">
+            <input type="password" id="password" placeholder="密码">
         </div>
         <div>
-            密码：<input type="password" id="password">
+            <input type="password" id="confirm_password" placeholder="确认密码">
         </div>
         <div>
-            确认密码：<input type="password" id="confirm_password">
-        </div>
-        <div>
-            <span id="reset_password_errormsg"></span>
+            <span id="reset_password_errormsg" style="color: brown;">&nbsp</span>
         </div>
         <div>
             <button id="reset_password_button">重置密码</button>

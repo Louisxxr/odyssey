@@ -54,19 +54,22 @@ class LogoutServiceView(MethodView):
 
 class UserinfoServiceView(MethodView):
     def get(self):
+        userid = session.get('userid')
         username = session.get('username')
 
-        sql = "select sex, signature, head from user where username = %s"
-        values = (username)
+        sql = "select sex, signature, head from user where userid = %s"
+        values = (userid)
         res = query(sql, values)
         if res:
             return jsonify({
+                "userid": userid,
                 "username": username,
                 "sex": res[0]['sex'],
                 "signature": res[0]['signature'],
                 "head": res[0]['head']
             }), 200
         return jsonify({
+            "userid": userid,
             "username": username,
             "sex": null,
             "signature": "",
@@ -461,7 +464,7 @@ class ArticleinfoServiceView(MethodView):
     def get(self):
         articleid = int(request.args.get('articleid'))
 
-        sql = '''select user.userid as 'userid', username, head, title, content, update_time, views
+        sql = '''select user.userid as 'userid', username, head, title, content, issue_time, update_time, views
         from user, article
         where user.userid = article.userid and articleid = %s'''
         values = (articleid)
@@ -474,22 +477,12 @@ class ArticleinfoServiceView(MethodView):
             "head": res[0]['head'],
             "title": res[0]['title'],
             "content": res[0]['content'],
+            "issue_time": str(res[0]['issue_time'].date()),
             "update_time": str(res[0]['update_time'].date()),
             "views": res[0]['views'],
             "like_num": like_num,
             "comment_num": comment_num
         }), 200
-
-class Check_is_my_articleServiceView(MethodView):
-    def get(self):
-        userid = session.get('userid')
-        articleid = int(request.args.get('articleid'))
-
-        res = query("select userid from article where articleid = %s", (articleid))[0]['userid']
-        if res == userid:
-            return "1", 200
-        else:
-            return "0", 200
 
 class Check_like_articleServiceView(MethodView):
     def get(self):
@@ -518,6 +511,37 @@ class Unlike_articleServiceView(MethodView):
         articleid = int(request.args.get('articleid'))
 
         if delete("delete from like_article where userid = %s and articleid = %s", (userid, articleid)):
+            return "", 200
+        else:
+            return "", 400
+
+class Check_follow_userServiceView(MethodView):
+    def get(self):
+        follower_userid = session.get('userid')
+        followee_userid = int(request.args.get('followee_userid'))
+
+        res = query("select count(*) as 'count' from follow_user where follower_userid = %s and followee_userid = %s", (follower_userid, followee_userid))[0]['count']
+        if res == 1:
+            return "1", 200
+        else:
+            return "0", 200
+
+class Follow_userServiceView(MethodView):
+    def get(self):
+        follower_userid = session.get('userid')
+        followee_userid = int(request.args.get('followee_userid'))
+
+        if insert("insert into follow_user values (%s, %s, now())", (follower_userid, followee_userid)):
+            return "", 200
+        else:
+            return "", 400
+
+class Unfollow_userServiceView(MethodView):
+    def get(self):
+        follower_userid = session.get('userid')
+        followee_userid = int(request.args.get('followee_userid'))
+
+        if delete("delete from follow_user where follower_userid = %s and followee_userid = %s", (follower_userid, followee_userid)):
             return "", 200
         else:
             return "", 400

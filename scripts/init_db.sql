@@ -109,6 +109,7 @@ create table comment_to_article (
 create table follow_user (
     follower_userid int,
     followee_userid int,
+    issue_time datetime not null,
     primary key(follower_userid, followee_userid),
     foreign key(follower_userid) references user(userid),
     foreign key(followee_userid) references user(userid)

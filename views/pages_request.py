@@ -309,3 +309,9 @@ class Update_articlePageView(MethodView):
         if update("update article set title = %s, content = %s, update_time = now() where articleid = %s", (title, content, articleid)):
             return "", 200
         return "", 400
+
+class UserPageView(MethodView):
+    def get(self, userid):
+        if session.get('userid') == int(userid):
+            return redirect('/homepage')
+        return render_template('/general.html')

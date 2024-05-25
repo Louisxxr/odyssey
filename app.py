@@ -21,6 +21,7 @@ app.add_url_rule('/question/<questionid>', view_func = QuestionPageView.as_view(
 app.add_url_rule('/edit_article', view_func = Edit_articlePageView.as_view('editarticlepage'))
 app.add_url_rule('/article/<articleid>', view_func = ArticlePageView.as_view('articlepage'))
 app.add_url_rule('/update_article/<articleid>', view_func = Update_articlePageView.as_view('updatearticlepage'))
+app.add_url_rule('/user/<userid>', view_func = UserPageView.as_view('userpage')) # to be finished
 # 服务
 app.add_url_rule('/service/authcode', view_func = AuthcodeServiceView.as_view('authcodeservice'))
 app.add_url_rule('/service/verifyemail', view_func = Verify_emailServiceView.as_view('verifyemailservice'))
@@ -46,10 +47,12 @@ app.add_url_rule('/service/unlikeanswer', view_func = Unlike_answerServiceView.a
 app.add_url_rule('/service/getallcomment/<item>', view_func = Get_all_commentServiceView.as_view('getallcommentservice'))
 app.add_url_rule('/service/submitcomment/<item>', view_func = Submit_commentServiceView.as_view('submitcommentservice'))
 app.add_url_rule('/service/articleinfo', view_func = ArticleinfoServiceView.as_view('articleinfoservice'))
-app.add_url_rule('/service/checkismyarticle', view_func = Check_is_my_articleServiceView.as_view('checkismyarticleservice'))
 app.add_url_rule('/service/checklikearticle', view_func = Check_like_articleServiceView.as_view('checklikearticleservice'))
 app.add_url_rule('/service/likearticle', view_func = Like_articleServiceView.as_view('likearticleservice'))
 app.add_url_rule('/service/unlikearticle', view_func = Unlike_articleServiceView.as_view('unlikearticleservice'))
+app.add_url_rule('/service/checkfollowuser', view_func = Check_follow_userServiceView.as_view('checkfollowuserservice'))
+app.add_url_rule('/service/followuser', view_func = Follow_userServiceView.as_view('followuserservice'))
+app.add_url_rule('/service/unfollowuser', view_func = Unfollow_userServiceView.as_view('unfollowuserservice'))
 
 if __name__ == '__main__':
     app.run()

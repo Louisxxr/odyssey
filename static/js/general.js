@@ -32,6 +32,8 @@ $(document).ready(function() {
         $("#specific_js").attr("src", "../static/js/articlepage.js");
     } else if (/\/update_article\/\d+/.test(url)) {
         $("#specific_js").attr("src", "../static/js/updatearticlepage.js");
+    } else if (/\/user\/\d+/.test(url)) {
+        $("#specific_js").attr("src", "../static/js/userpage.js");
     }
 
     $("#login").hide();
