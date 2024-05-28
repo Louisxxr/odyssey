@@ -96,13 +96,9 @@ $(document).ready(function() {
         })
     </script>
     <div style="height: 50px;">
-        <div id="moment_button" style="cursor:pointer; display: inline-block; font-size: 20px; height: 40px; width: 100px; text-align: center; line-height: 40px;">动态</div>
         <div id="question_button" style="cursor:pointer; display: inline-block; font-size: 20px; height: 40px; width: 100px; text-align: center; line-height: 40px;">提问</div>
         <div id="answer_button" style="cursor:pointer; display: inline-block; font-size: 20px; height: 40px; width: 100px; text-align: center; line-height: 40px;">回答</div>
         <div id="article_button" style="cursor:pointer; display: inline-block; font-size: 20px; height: 40px; width: 100px; text-align: center; line-height: 40px;">文章</div>
-    </div>
-    <div id="moment_block">
-        动态...
     </div>
     <div id="question_block">
         问题...
@@ -115,9 +111,8 @@ $(document).ready(function() {
     </div>
     <script>
         $(document).ready(function() {
-            $("#moment_button").css("background-color", "#002fa7");
-            $("#moment_button").css("color", "white");
-            $("#question_block").hide();
+            $("#question_button").css("background-color", "#002fa7");
+            $("#question_button").css("color", "white");
             $("#answer_block").hide();
             $("#article_block").hide();
         });
@@ -328,32 +323,14 @@ $(document).ready(function() {
         });
     });
 
-    $("#moment_button").click(function() {
-        $("#moment_button").css("background-color", "#002fa7");
-        $("#moment_button").css("color", "white");
-        $("#question_button").css("background-color", "white");
-        $("#question_button").css("color", "black");
-        $("#answer_button").css("background-color", "white");
-        $("#answer_button").css("color", "black");
-        $("#article_button").css("background-color", "white");
-        $("#article_button").css("color", "black");
-        $("#moment_block").show();
-        $("#question_block").hide();
-        $("#answer_block").hide();
-        $("#article_block").hide();
-    });
-
     $("#question_button").click(function() {
         $("#question_button").css("background-color", "#002fa7");
         $("#question_button").css("color", "white");
-        $("#moment_button").css("background-color", "white");
-        $("#moment_button").css("color", "black");
         $("#answer_button").css("background-color", "white");
         $("#answer_button").css("color", "black");
         $("#article_button").css("background-color", "white");
         $("#article_button").css("color", "black");
         $("#question_block").show();
-        $("#moment_block").hide();
         $("#answer_block").hide();
         $("#article_block").hide();
     });
@@ -361,14 +338,11 @@ $(document).ready(function() {
     $("#answer_button").click(function() {
         $("#answer_button").css("background-color", "#002fa7");
         $("#answer_button").css("color", "white");
-        $("#moment_button").css("background-color", "white");
-        $("#moment_button").css("color", "black");
         $("#question_button").css("background-color", "white");
         $("#question_button").css("color", "black");
         $("#article_button").css("background-color", "white");
         $("#article_button").css("color", "black");
         $("#answer_block").show();
-        $("#moment_block").hide();
         $("#question_block").hide();
         $("#article_block").hide();
     });
@@ -376,14 +350,11 @@ $(document).ready(function() {
     $("#article_button").click(function() {
         $("#article_button").css("background-color", "#002fa7");
         $("#article_button").css("color", "white");
-        $("#moment_button").css("background-color", "white");
-        $("#moment_button").css("color", "black");
         $("#question_button").css("background-color", "white");
         $("#question_button").css("color", "black");
         $("#answer_button").css("background-color", "white");
         $("#answer_button").css("color", "black");
         $("#article_block").show();
-        $("#moment_block").hide();
         $("#question_block").hide();
         $("#answer_block").hide();
     });
