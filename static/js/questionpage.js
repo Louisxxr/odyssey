@@ -324,8 +324,13 @@ $(document).ready(function() {
         if (!login_state) {
             alert("您还未登录哦~");
         } else {
-            $("#editor-wrapper").slideDown("slow");
-            $("#submit_answer_block").slideDown("slow");
+            if ($("#editor-wrapper").is(":visible")) {
+                $("#editor-wrapper").slideUp("slow");
+                $("#submit_answer_block").slideUp("slow");
+            } else {
+                $("#editor-wrapper").slideDown("slow");
+                $("#submit_answer_block").slideDown("slow");
+            }
         }
         return false;
     });

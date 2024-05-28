@@ -21,7 +21,7 @@ app.add_url_rule('/question/<questionid>', view_func = QuestionPageView.as_view(
 app.add_url_rule('/edit_article', view_func = Edit_articlePageView.as_view('editarticlepage'))
 app.add_url_rule('/article/<articleid>', view_func = ArticlePageView.as_view('articlepage'))
 app.add_url_rule('/update_article/<articleid>', view_func = Update_articlePageView.as_view('updatearticlepage'))
-app.add_url_rule('/user/<userid>', view_func = UserPageView.as_view('userpage')) # to be finished
+app.add_url_rule('/user/<userid>', view_func = UserPageView.as_view('userpage'))
 # 服务
 app.add_url_rule('/service/authcode', view_func = AuthcodeServiceView.as_view('authcodeservice'))
 app.add_url_rule('/service/verifyemail', view_func = Verify_emailServiceView.as_view('verifyemailservice'))
