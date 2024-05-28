@@ -97,6 +97,9 @@ button {
     padding: 5px 20px;
     margin: 4px 2px;
     cursor: pointer;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 hr {

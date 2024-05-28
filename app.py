@@ -14,7 +14,7 @@ app.add_url_rule('/', view_func = MainPageView.as_view('mainpage'))
 app.add_url_rule('/login', view_func = LoginPageView.as_view('loginpage'))
 app.add_url_rule('/register', view_func = RegisterPageView.as_view('registerpage'))
 app.add_url_rule('/reset_password', view_func = Reset_passwordPageView.as_view('resetpasswordpage'))
-app.add_url_rule('/homepage', view_func = HomePageView.as_view('homepage')) # to be finished
+app.add_url_rule('/homepage', view_func = HomePageView.as_view('homepage'))
 app.add_url_rule('/update_userinfo', defaults = { 'item': None }, view_func = Update_userinfoPageView.as_view('updateuserinfopage'))
 app.add_url_rule('/edit_question', view_func = Edit_questionPageView.as_view('editquestionpage'))
 app.add_url_rule('/question/<questionid>', view_func = QuestionPageView.as_view('questionpage'))

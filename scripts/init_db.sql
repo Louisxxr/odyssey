@@ -174,6 +174,18 @@ ALTER TABLE `answer` ADD CONSTRAINT `answer_ibfk_1` FOREIGN KEY (`questionid`) R
 ALTER TABLE `follow_question` DROP FOREIGN KEY `follow_question_ibfk_2`;
 ALTER TABLE `follow_question` ADD CONSTRAINT `follow_question_ibfk_2` FOREIGN KEY (`questionid`) REFERENCES `question` (`questionid`) ON DELETE CASCADE;
 
+ALTER TABLE `like_answer` DROP FOREIGN KEY `like_answer_ibfk_2`;
+ALTER TABLE `like_answer` ADD CONSTRAINT `like_answer_ibfk_2` FOREIGN KEY (`answerid`) REFERENCES `answer` (`answerid`) ON DELETE CASCADE;
+
+ALTER TABLE `comment_to_answer` DROP FOREIGN KEY `comment_to_answer_ibfk_2`;
+ALTER TABLE `comment_to_answer` ADD CONSTRAINT `comment_to_answer_ibfk_2` FOREIGN KEY (`answerid`) REFERENCES `answer` (`answerid`) ON DELETE CASCADE;
+
+ALTER TABLE `like_article` DROP FOREIGN KEY `like_article_ibfk_2`;
+ALTER TABLE `like_article` ADD CONSTRAINT `like_article_ibfk_2` FOREIGN KEY (`articleid`) REFERENCES `article` (`articleid`) ON DELETE CASCADE;
+
+ALTER TABLE `comment_to_article` DROP FOREIGN KEY `comment_to_article_ibfk_2`;
+ALTER TABLE `comment_to_article` ADD CONSTRAINT `comment_to_article_ibfk_2` FOREIGN KEY (`articleid`) REFERENCES `article` (`articleid`) ON DELETE CASCADE;
+
 ALTER TABLE answer CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ALTER TABLE article CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ALTER TABLE comment_to_answer CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

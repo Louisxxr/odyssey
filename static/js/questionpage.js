@@ -71,9 +71,16 @@ $(document).ready(function() {
         <div>
             <h1>${question_info["title"].slice(3, -4)}</h1>
         </div>
-        <div style="background-color: #eee; padding: 1px 1px;">
+        <div id="question_description" style="background-color: #eee; padding: 1px 1px;">
             ${question_info["description"]}
         </div>
+        <script>
+            $(document).ready(function() {
+                if (question_info["description"] === "" || question_info["description"] === "<p><br></p>") {
+                    $("#question_description").hide();
+                }
+            })
+        </script>
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <div style="margin-right: auto;">
                 <span>${question_info["issue_time"]}</span>
@@ -120,6 +127,24 @@ $(document).ready(function() {
 
     <div id="answers_to_the_question">
     </div>
+
+    <script>
+        $(document).ready(function() {
+            // 检查 URL 中是否包含哈希值
+            var hash = window.location.hash;
+            if (hash) {
+                // 延迟执行，确保动态内容加载完成
+                setTimeout(function() {
+                    var targetElement = $(hash);
+                    if (targetElement.length) {
+                        $('html, body').animate({
+                            scrollTop: targetElement.offset().top
+                        }, 500); // 500 毫秒（0.5 秒）内平滑滚动
+                    }
+                }, 1000); // 这里设置1秒延迟，可以根据需要调整
+            }
+        });
+    </script>
     `);
 
     // ----------------
@@ -349,7 +374,7 @@ $(document).ready(function() {
                     let like_num = resp[i + 6];
                     let comment_num = resp[i + 7];
                     $("#answers_to_the_question").append(`
-                    <div class="question_answers">
+                    <div class="question_answers" id="answer_${answerid}_to_the_question">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <div style="display: flex; align-items: center; margin-right: auto;">
                                 <span style="display: inline-flex; align-items: center;"><a href="/user/${uid}"><img src="${head}" height="40" width="40" style="border-radius: 10%;"></a></span>

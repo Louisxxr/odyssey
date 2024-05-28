@@ -6,6 +6,7 @@ from views.utils.send_authcode import *
 import os
 import time
 import random
+from bs4 import BeautifulSoup
 
 class AuthcodeServiceView(MethodView):
     def get(self):
@@ -54,26 +55,28 @@ class LogoutServiceView(MethodView):
 
 class UserinfoServiceView(MethodView):
     def get(self):
-        userid = session.get('userid')
-        username = session.get('username')
+        userid = request.args.get('userid')
+        if not userid:
+            userid = session['userid']
 
-        sql = "select sex, signature, head from user where userid = %s"
-        values = (userid)
-        res = query(sql, values)
-        if res:
-            return jsonify({
-                "userid": userid,
-                "username": username,
-                "sex": res[0]['sex'],
-                "signature": res[0]['signature'],
-                "head": res[0]['head']
-            }), 200
+        res = query("select username, sex, birthday, signature, city, job, head from user where userid = %s", (userid))
+        cityid = res[0]['city']
+        city = ''
+        if cityid != None:
+            city = query("select provincename, cityname from province, city where cityid = %s and city.provinceid = province.provinceid", (cityid))
+            if city[0]['provincename'] == city[0]['cityname']:
+                city = city[0]['cityname']
+            else:
+                city = city[0]['provincename'] + ' ' + city[0]['cityname']
         return jsonify({
             "userid": userid,
-            "username": username,
-            "sex": null,
-            "signature": "",
-            "head": "/static/img/head/default.jpg"
+            "username": res[0]['username'],
+            "sex": res[0]['sex'],
+            "birthday": str(res[0]['birthday']) if res[0]['birthday'] != None else "",
+            "signature": res[0]['signature'],
+            "city": city,
+            "job": res[0]['job'] if res[0]['job'] != None else "",
+            "head": res[0]['head']
         }), 200
 
 class Upload_imgServiceView(MethodView):
@@ -99,7 +102,7 @@ class Province_listServiceView(MethodView):
     def get(self):
         sql = "select * from province order by provinceid"
         res = query(sql, ())
-        ret = ""
+        ret = ''
         for item in res:
             ret += str(item['provinceid']) + ' ' + item['provincename'] + ' '
         ret = ret[0 : -1]
@@ -112,7 +115,7 @@ class City_listServiceView(MethodView):
         sql = "select cityid, cityname from city where provinceid = %s order by cityid"
         values = (provinceid)
         res = query(sql, values)
-        ret = ""
+        ret = ''
         for item in res:
             ret += str(item['cityid']) + ' ' + item['cityname'] + ' '
         ret = ret[0 : -1]
@@ -125,7 +128,7 @@ class UserassetServiceView(MethodView):
             userid = session['userid']
 
         if asset == "question":
-            sql = "select questionid, title, issue_time, views from question where userid = %s order by issue_time"
+            sql = "select questionid, title, issue_time, views from question where userid = %s order by issue_time desc"
             values = (userid)
             res = query(sql, values)
 
@@ -135,7 +138,48 @@ class UserassetServiceView(MethodView):
 
             ret = magic_split_flag
             for item in res:
-                ret += str(item['questionid']) + magic_split_flag + item['title'] + magic_split_flag + str(item['issue_time']) + magic_split_flag + str(item['views']) + magic_split_flag
+                answer_num = query("select count(*) as 'answer_num' from answer where questionid = %s", (item['questionid']))[0]['answer_num']
+                ret += str(item['questionid']) + magic_split_flag + item['title'] + magic_split_flag + str(item['issue_time'].date()) + magic_split_flag + str(item['views']) + magic_split_flag + str(answer_num) + magic_split_flag
+            ret = ret[0 : -4]
+            return ret, 200
+        
+        elif asset == "answer":
+            sql = "select answerid, questionid, content, update_time from answer where userid = %s order by update_time desc"
+            values = (userid)
+            res = query(sql, values)
+
+            magic_split_flag = '' # 因为title允许各种字符
+            for i in range(4):
+                magic_split_flag += chr(random.randint(0, 25) + 65)
+            
+            ret = magic_split_flag
+            for item in res:
+                question_title = query("select title from question where questionid = %s", (res[0]['questionid']))[0]['title']
+                content_html = item['content']
+                soup = BeautifulSoup(content_html, 'lxml')
+                texts = soup.find_all(text = True)
+                texts = [text.strip() for text in texts if text.strip()]
+                content = '<p>......</p>'
+                if texts:
+                    content = '<p>' + texts[0] + '</p>'
+                like_num = query("select count(*) as 'like_num' from like_answer where answerid = %s", (item['answerid']))[0]['like_num']
+                ret += str(item['answerid']) + magic_split_flag + str(item['questionid']) + magic_split_flag + question_title + magic_split_flag + content + magic_split_flag + str(item['update_time'].date()) + magic_split_flag + str(like_num) + magic_split_flag
+            ret = ret[0 : -4]
+            return ret, 200
+
+        elif asset == "article":
+            sql = "select articleid, title, update_time, views from article where userid = %s order by update_time desc"
+            values = (userid)
+            res = query(sql, values)
+
+            magic_split_flag = ''
+            for i in range(4):
+                magic_split_flag += chr(random.randint(0, 25) + 65)
+
+            ret = magic_split_flag
+            for item in res:
+                like_num = query("select count(*) as 'like_num' from like_article where articleid = %s", (item['articleid']))[0]['like_num']
+                ret += str(item['articleid']) + magic_split_flag + item['title'] + magic_split_flag + str(item['update_time'].date()) + magic_split_flag + str(item['views']) + magic_split_flag + str(like_num) + magic_split_flag
             ret = ret[0 : -4]
             return ret, 200
 
@@ -146,6 +190,24 @@ class DeleteServiceView(MethodView):
 
             sql = "delete from question where questionid = %s"
             values = (questionid)
+            if delete(sql, values):
+                return '', 200
+            return '', 400
+        
+        elif asset == "answer":
+            answerid = int(request.args.get('answerid'))
+
+            sql = "delete from answer where answerid = %s"
+            values = (answerid)
+            if delete(sql, values):
+                return '', 200
+            return '', 400
+
+        elif asset == "article":
+            articleid = int(request.args.get('articleid'))
+
+            sql = "delete from article where articleid = %s"
+            values = (articleid)
             if delete(sql, values):
                 return '', 200
             return '', 400
