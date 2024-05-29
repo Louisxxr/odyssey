@@ -22,6 +22,10 @@ app.add_url_rule('/edit_article', view_func = Edit_articlePageView.as_view('edit
 app.add_url_rule('/article/<articleid>', view_func = ArticlePageView.as_view('articlepage'))
 app.add_url_rule('/update_article/<articleid>', view_func = Update_articlePageView.as_view('updatearticlepage'))
 app.add_url_rule('/user/<userid>', view_func = UserPageView.as_view('userpage'))
+app.add_url_rule('/question_followed', view_func = Question_followedPageView.as_view('questionfollowedpage'))
+app.add_url_rule('/user_followed', view_func = User_followedPageView.as_view('userfollowedpage'))
+app.add_url_rule('/user_following_me', view_func = User_following_mePageView.as_view('userfollowingmepage'))
+app.add_url_rule('/collection', view_func = CollectionPageView.as_view('collectionpage'))
 # 服务
 app.add_url_rule('/service/authcode', view_func = AuthcodeServiceView.as_view('authcodeservice'))
 app.add_url_rule('/service/verifyemail', view_func = Verify_emailServiceView.as_view('verifyemailservice'))
@@ -53,6 +57,7 @@ app.add_url_rule('/service/unlikearticle', view_func = Unlike_articleServiceView
 app.add_url_rule('/service/checkfollowuser', view_func = Check_follow_userServiceView.as_view('checkfollowuserservice'))
 app.add_url_rule('/service/followuser', view_func = Follow_userServiceView.as_view('followuserservice'))
 app.add_url_rule('/service/unfollowuser', view_func = Unfollow_userServiceView.as_view('unfollowuserservice'))
+app.add_url_rule('/service/followinglist', view_func = FollowinglistServiceView.as_view('followinglistservice'))
 
 if __name__ == '__main__':
     app.run()

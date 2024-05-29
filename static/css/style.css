@@ -1,8 +1,8 @@
 body {
     margin-top: 2%;
     margin-bottom: 2%;
-    margin-left: 10%;
-    margin-right: 10%;
+    margin-left: 15%;
+    margin-right: 15%;
     padding-top: 80px;
     padding-bottom: 80px;
     font-family: STXihei;
@@ -16,7 +16,7 @@ body > footer {
     color: white;
     bottom: 0;
     text-align: center;
-    width: 80%;
+    width: 70%;
     padding: 10px 0;
     position: fixed;
 }
@@ -41,7 +41,7 @@ body > header {
     top: 0;
     left: 0;
     right: 0;
-    width: 80%;
+    width: 70%;
     margin-left: auto;
     margin-right: auto;
     padding: 10px 0;
@@ -100,6 +100,10 @@ button {
     display: block;
     white-space: nowrap;
     overflow: hidden;
+}
+
+button:hover {
+    background-color: #000f87;
 }
 
 hr {

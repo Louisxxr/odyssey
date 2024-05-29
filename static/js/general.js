@@ -34,6 +34,18 @@ $(document).ready(function() {
         $("#specific_js").attr("src", "../static/js/updatearticlepage.js");
     } else if (/\/user\/\d+/.test(url)) {
         $("#specific_js").attr("src", "../static/js/userpage.js");
+    } else if (url === "/question_followed") {
+        $("title").prepend("关注的问题 - ");
+        $("#specific_js").attr("src", "../static/js/questionfollowedpage.js");
+    } else if (url === "/user_followed") {
+        $("title").prepend("关注的人 - ");
+        $("#specific_js").attr("src", "../static/js/userfollowedpage.js");
+    } else if (url === "/user_following_me") {
+        $("title").prepend("被关注 - ");
+        $("#specific_js").attr("src", "../static/js/userfollowingmepage.js");
+    } else if (url === "/collection") {
+        $("title").prepend("收藏夹 - ");
+        $("#specific_js").attr("src", "../static/js/collectionpage.js");
     }
 
     $("#login").hide();

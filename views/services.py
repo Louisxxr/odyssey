@@ -68,6 +68,7 @@ class UserinfoServiceView(MethodView):
                 city = city[0]['cityname']
             else:
                 city = city[0]['provincename'] + ' ' + city[0]['cityname']
+        fans_num = query("select count(*) as 'fans_num' from follow_user where followee_userid = %s", (userid))[0]['fans_num']
         return jsonify({
             "userid": userid,
             "username": res[0]['username'],
@@ -76,7 +77,8 @@ class UserinfoServiceView(MethodView):
             "signature": res[0]['signature'],
             "city": city,
             "job": res[0]['job'] if res[0]['job'] != None else "",
-            "head": res[0]['head']
+            "head": res[0]['head'],
+            "fans_num": fans_num
         }), 200
 
 class Upload_imgServiceView(MethodView):
@@ -148,7 +150,7 @@ class UserassetServiceView(MethodView):
             values = (userid)
             res = query(sql, values)
 
-            magic_split_flag = '' # 因为title允许各种字符
+            magic_split_flag = ''
             for i in range(4):
                 magic_split_flag += chr(random.randint(0, 25) + 65)
             
@@ -607,3 +609,22 @@ class Unfollow_userServiceView(MethodView):
             return "", 200
         else:
             return "", 400
+
+class FollowinglistServiceView(MethodView):
+    def get(self):
+        userid = session.get('userid')
+
+        magic_split_flag = ''
+        for i in range(4):
+            magic_split_flag += chr(random.randint(0, 25) + 65)
+        ret = magic_split_flag
+
+        sql = "select userid, username, head, signature from user, follow_user where user.userid = follow_user.followee_userid and follow_user.follower_userid = %s order by issue_time desc"
+        values = (userid)
+        res = query(sql, values)
+        for item in res:
+            fans_num = query("select count(*) as 'fans_num' from follow_user where followee_userid = %s", (item['userid']))[0]['fans_num']
+            ret += str(item['userid']) + magic_split_flag + item['username'] + magic_split_flag + item['head'] + magic_split_flag + item['signature'] + magic_split_flag + str(fans_num) + magic_split_flag
+        
+        ret = ret[0 : -4]
+        return ret, 200

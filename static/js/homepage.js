@@ -31,7 +31,7 @@ $(document).ready(function() {
         }
 
         #homepage_head:hover {
-            transform: scale(1.05);
+            transform: scale(1.1);
         }
 
         #homepage_info {
@@ -72,6 +72,7 @@ $(document).ready(function() {
             </div>
             <div id="homepage_signature"></div>
         </div>
+        <a href="/user_following_me" style="margin-left: auto; color: pink; font-size: 18px;"><strong>粉丝数</strong>  <span id="homepage_fans_num"></span></a>
     </div>
     <div id="homepage_otherinfo" style="font-size: 14px;">
     </div>
@@ -133,6 +134,7 @@ $(document).ready(function() {
                 }
             }
             $("#homepage_signature").append(resp.signature);
+            $("#homepage_fans_num").append(resp.fans_num);
             if (resp.birthday !== "") {
                 $("#homepage_otherinfo").append(`<div>生日：${resp.birthday}</div>`);
             }

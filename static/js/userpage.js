@@ -46,7 +46,7 @@ $(document).ready(function() {
         }
 
         #userpage_head:hover {
-            transform: scale(1.05);
+            transform: scale(1.1);
         }
 
         #userpage_info {
@@ -87,7 +87,10 @@ $(document).ready(function() {
             </div>
             <div id="userpage_signature"></div>
         </div>
-        <button id="follow_user_button" style="margin-left: auto; width: 100px;">关注</button>
+        <div style="margin-left: auto; display: flex; flex-direction: column; align-items: center;">
+            <span style="color: pink; font-size: 18px;"><strong>粉丝数</strong>  <span id="userpage_fans_num"></span></span>
+            <button id="follow_user_button" style="width: 100px; margin-top: 10px;">关注</button>
+        </div>
     </div>
     <div id="userpage_otherinfo" style="font-size: 14px;">
     </div>
@@ -151,6 +154,7 @@ $(document).ready(function() {
                 }
             }
             $("#userpage_signature").append(resp.signature);
+            $("#userpage_fans_num").append(resp.fans_num);
             if (resp.birthday !== "") {
                 $("#userpage_otherinfo").append(`<div>生日：${resp.birthday}</div>`);
             }
@@ -200,6 +204,9 @@ $(document).ready(function() {
                                 $("#follow_user_button").css("background-color", "#002fa7");
                                 $("#follow_user_button").empty();
                                 $("#follow_user_button").append("关注");
+                                let fans_num = Number($("#userpage_fans_num").text()) - 1;
+                                $("#userpage_fans_num").empty();
+                                $("#userpage_fans_num").append(fans_num);
                             },
                             error: function() {
                                 alert("请稍后再试~");
@@ -214,6 +221,9 @@ $(document).ready(function() {
                                 $("#follow_user_button").css("background-color", "#888");
                                 $("#follow_user_button").empty();
                                 $("#follow_user_button").append("已关注");
+                                let fans_num = Number($("#userpage_fans_num").text()) + 1;
+                                $("#userpage_fans_num").empty();
+                                $("#userpage_fans_num").append(fans_num);
                             },
                             error: function() {
                                 alert("请稍后再试~");
@@ -226,38 +236,10 @@ $(document).ready(function() {
     });
 
     $.ajax({
-        url: "/service/userinfo",
-        type: "get",
-        success: function(resp) {
-            $("#homepage_head").attr("src", resp.head);
-            $("#homepage_username").append(resp.username);
-            if (resp.sex !== null) {
-                if (resp.sex === "M") {
-                    $("#homepage_sex").append('<img src="/static/img/male.svg" height="20" width="20">');
-                } else {
-                    $("#homepage_sex").append('<img src="/static/img/female.svg" height="20" width="20">');
-                }
-            }
-            $("#homepage_signature").append(resp.signature);
-            if (resp.birthday !== "") {
-                $("#homepage_otherinfo").append(`<div>生日：${resp.birthday}</div>`);
-            }
-            if (resp.city !== "") {
-                $("#homepage_otherinfo").append(`<div>常居地：${resp.city}</div>`);
-            }
-            if (resp.job !== "") {
-                $("#homepage_otherinfo").append(`<div>职业：${resp.job}</div>`);
-            }
-            if ($("#homepage_otherinfo").text().trim().length === 0) {
-                $("#homepage_otherinfo").append(`<div>可以在“编辑个人资料”中完善哦</div>`);
-            }
-        }
-    });
-
-    $.ajax({
         async: false, // 重要
         url: "/service/userasset/question",
         type: "get",
+        data: { "userid": userid },
         success: function(resp) {
             if (resp === "") {
                 $("#question_block").empty();
@@ -299,6 +281,7 @@ $(document).ready(function() {
         async: false,
         url: "/service/userasset/answer",
         type: "get",
+        data: { "userid": userid },
         success: function(resp) {
             if (resp === "") {
                 $("#answer_block").empty();
@@ -343,6 +326,7 @@ $(document).ready(function() {
         async: false,
         url: "/service/userasset/article",
         type: "get",
+        data: { "userid": userid },
         success: function(resp) {
             if (resp === "") {
                 $("#article_block").empty();

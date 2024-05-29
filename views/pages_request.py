@@ -315,3 +315,27 @@ class UserPageView(MethodView):
         if session.get('userid') == int(userid):
             return redirect('/homepage')
         return render_template('/general.html')
+
+class Question_followedPageView(MethodView):
+    def get(self):
+        if session.get('username') is None:
+            return redirect('/')
+        return render_template('/general.html')
+
+class User_followedPageView(MethodView):
+    def get(self):
+        if session.get('username') is None:
+            return redirect('/')
+        return render_template('/general.html')
+
+class User_following_mePageView(MethodView):
+    def get(self):
+        if session.get('username') is None:
+            return redirect('/')
+        return render_template('/general.html')
+
+class CollectionPageView(MethodView):
+    def get(self):
+        if session.get('username') is None:
+            return redirect('/')
+        return render_template('/general.html')
