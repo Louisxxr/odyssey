@@ -1,20 +1,15 @@
 $(document).ready(function() {
     $("main").append(`
     <style>
-        main hr {
-            border: 0;
-            height: 1px;
-            background: #ddd;
-        }
-
         .list_item {
             display: flex;
             align-items: center;
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 5px;
-            margin-bottom: 10px;
+            margin: 10px;
             background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         
         .head {
@@ -71,6 +66,9 @@ $(document).ready(function() {
             <a href="/user_following_me"><div style="cursor:pointer; display: inline-block; font-size: 20px; height: 40px; width: 100px; text-align: center; line-height: 40px; background-color: white; color: black;">被关注</div></a>
         </div>
     </div>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <span style="margin-left: auto;"><strong>关注了</strong> <span id="followingcount"></span> <strong>人</strong></span>
+    </div>
     <div id="followinglist">
     </div>
     `);
@@ -81,11 +79,13 @@ $(document).ready(function() {
         type: "get",
         success: function(resp) {
             if (resp === "") {
-                $("#followinglist").append("<div>你还没有关注其他人哦，快去发现创作者吧</div>");
+                $("#followingcount").append("0");
+                $("#followinglist").append("<div>你还没有关注其他人哦，快去广场发现创作者吧</div>");
             } else {
                 magic_split_flag = resp.slice(0, 4);
                 resp = resp.slice(4, resp.length);
                 resp = resp.split(magic_split_flag);
+                $("#followingcount").append(String(resp.length / 5));
                 for (let i = 0; i < resp.length; i += 5) {
                     let userid = resp[i];
                     let username = resp[i + 1];

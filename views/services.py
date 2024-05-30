@@ -628,3 +628,22 @@ class FollowinglistServiceView(MethodView):
         
         ret = ret[0 : -4]
         return ret, 200
+
+class FollowerlistServiceView(MethodView):
+    def get(self):
+        userid = session.get('userid')
+
+        magic_split_flag = ''
+        for i in range(4):
+            magic_split_flag += chr(random.randint(0, 25) + 65)
+        ret = magic_split_flag
+
+        sql = "select userid, username, head, signature from user, follow_user where user.userid = follow_user.follower_userid and follow_user.followee_userid = %s order by issue_time desc"
+        values = (userid)
+        res = query(sql, values)
+        for item in res:
+            fans_num = query("select count(*) as 'fans_num' from follow_user where followee_userid = %s", (item['userid']))[0]['fans_num']
+            ret += str(item['userid']) + magic_split_flag + item['username'] + magic_split_flag + item['head'] + magic_split_flag + item['signature'] + magic_split_flag + str(fans_num) + magic_split_flag
+        
+        ret = ret[0 : -4]
+        return ret, 200
