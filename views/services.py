@@ -647,3 +647,89 @@ class FollowerlistServiceView(MethodView):
         
         ret = ret[0 : -4]
         return ret, 200
+
+class QuestionfollowinglistServiceView(MethodView):
+    def get(self):
+        userid = session.get('userid')
+
+        magic_split_flag = ''
+        for i in range(4):
+            magic_split_flag += chr(random.randint(0, 25) + 65)
+        ret = magic_split_flag
+
+        sql = '''select user.userid as 'userid', username, head, question.questionid as 'questionid', title, follow_question.issue_time as 'issue_time'
+        from follow_question, question, user
+        where follow_question.userid = %s and follow_question.questionid = question.questionid and question.userid = user.userid
+        order by follow_question.issue_time desc'''
+        values = (userid)
+        res = query(sql, values)
+        for item in res:
+            answer_num = query("select count(*) as 'answer_num' from answer where questionid = %s", (item['questionid']))[0]['answer_num']
+            ret += str(item['userid']) + magic_split_flag
+            ret += item['username'] + magic_split_flag
+            ret += item['head'] + magic_split_flag
+            ret += str(item['questionid']) + magic_split_flag
+            ret += item['title'] + magic_split_flag
+            ret += str(item['issue_time'].date()) + magic_split_flag
+            ret += str(answer_num) + magic_split_flag
+        
+        ret = ret[0 : -4]
+        return ret, 200
+
+class CollectionServiceView(MethodView):
+    def get(self, item):
+        userid = session.get('userid')
+
+        magic_split_flag = ''
+        for i in range(4):
+            magic_split_flag += chr(random.randint(0, 25) + 65)
+        ret = magic_split_flag
+
+        if item == 'answer':
+            sql = '''select user.userid as 'userid', username, head, question.questionid as 'questionid', title, answer.answerid as 'answerid', content, like_answer.issue_time
+            from like_answer, answer, question, user
+            where like_answer.userid = %s and like_answer.answerid = answer.answerid and answer.questionid = question.questionid and answer.userid = user.userid
+            order by like_answer.issue_time desc'''
+            values = (userid)
+            res = query(sql, values)
+            for item in res:
+                content_html = item['content']
+                soup = BeautifulSoup(content_html, 'lxml')
+                texts = soup.find_all(text = True)
+                texts = [text.strip() for text in texts if text.strip()]
+                content = '<p>......</p>'
+                if texts:
+                    content = '<p>' + texts[0] + '</p>'
+                like_num = query("select count(*) as 'like_num' from like_answer where answerid = %s", (item['answerid']))[0]['like_num']
+                ret += str(item['userid']) + magic_split_flag
+                ret += item['username'] + magic_split_flag
+                ret += item['head'] + magic_split_flag
+                ret += str(item['questionid']) + magic_split_flag
+                ret += item['title'] + magic_split_flag
+                ret += str(item['answerid']) + magic_split_flag
+                ret += content + magic_split_flag
+                ret += str(item['issue_time'].date()) + magic_split_flag
+                ret += str(like_num) + magic_split_flag
+            
+            ret = ret[0 : -4]
+            return ret, 200
+        
+        elif item == 'article':
+            sql = '''select user.userid as 'userid', username, head, article.articleid as 'articleid', title, like_article.issue_time
+            from like_article, article, user
+            where like_article.userid = %s and like_article.articleid = article.articleid and article.userid = user.userid
+            order by like_article.issue_time desc'''
+            values = (userid)
+            res = query(sql, values)
+            for item in res:
+                like_num = query("select count(*) as 'like_num' from like_article where articleid = %s", (item['articleid']))[0]['like_num']
+                ret += str(item['userid']) + magic_split_flag
+                ret += item['username'] + magic_split_flag
+                ret += item['head'] + magic_split_flag
+                ret += str(item['articleid']) + magic_split_flag
+                ret += item['title'] + magic_split_flag
+                ret += str(item['issue_time'].date()) + magic_split_flag
+                ret += str(like_num) + magic_split_flag
+            
+            ret = ret[0 : -4]
+            return ret, 200

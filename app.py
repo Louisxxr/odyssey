@@ -59,6 +59,8 @@ app.add_url_rule('/service/followuser', view_func = Follow_userServiceView.as_vi
 app.add_url_rule('/service/unfollowuser', view_func = Unfollow_userServiceView.as_view('unfollowuserservice'))
 app.add_url_rule('/service/followinglist', view_func = FollowinglistServiceView.as_view('followinglistservice'))
 app.add_url_rule('/service/followerlist', view_func = FollowerlistServiceView.as_view('followerlistservice'))
+app.add_url_rule('/service/questionfollowinglist', view_func = QuestionfollowinglistServiceView.as_view('questionfollowinglistservice'))
+app.add_url_rule('/service/collection/<item>', view_func = CollectionServiceView.as_view('collectionservice'))
 
 if __name__ == '__main__':
     app.run()

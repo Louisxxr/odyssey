@@ -146,6 +146,8 @@ create index idx_comment_to_article_userid on comment_to_article(userid);
 create index idx_comment_to_article_articleid on comment_to_article(articleid);
 create index idx_comment_to_article_issue_time on comment_to_article(issue_time);
 
+create index idx_follow_user_issue_time on follow_user(issue_time);
+
 
 -- 触发器（delimiter ;;）
 
