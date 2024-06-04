@@ -1,6 +1,6 @@
 ### 什么是 Odyssey
 
-[Odyssey](louis-odyssey.cn) 是一个问答互动和文章分享平台
+[Odyssey](http://louis-odyssey.cn) 是一个问答互动和文章分享平台
 
 ### 技术栈
 
