@@ -46,6 +46,8 @@ $(document).ready(function() {
     });
 
     $("main").append(`
+    <link rel="stylesheet" href="../static/css/prism.css">
+    <script src="../static/js/plugins/prism.js"></script>
     <div>
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <div style="display: flex; align-items: center; margin-right: auto;">

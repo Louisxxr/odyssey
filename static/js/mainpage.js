@@ -12,8 +12,33 @@ $(document).ready(function() {
             height: 1px;
             background: #ddd;
         }
+
+        .tooltip-container {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .tooltip {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.75);
+            border: 1px solid black;
+            color: black;
+            padding: 5px 10px;
+            border-radius: 4px;
+            white-space: nowrap;
+            display: none;
+            z-index: 1000;
+        }
+        
+        .tooltip-container:hover .tooltip {
+            display: block;
+        }
     </style>
     <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div class="tooltip-container" style="margin-right: auto;">
+            <img src="/static/img/tip.svg" height="20" width="20">
+            <div class="tooltip"><img src="/static/img/question.svg" height="20" width="20"> 表示问答，<img src="/static/img/article.svg" height="20" width="20"> 表示文章</div>
+        </div>
         <div style="height: 50px; margin-left: auto;">
             <div id="hotspot_button" style="cursor:pointer; display: inline-block; font-size: 20px; height: 40px; width: 100px; text-align: center; line-height: 40px;">热门</div>
             <div id="newspot_button" style="cursor:pointer; display: inline-block; font-size: 20px; height: 40px; width: 100px; text-align: center; line-height: 40px;">最近</div>
@@ -194,5 +219,26 @@ $(document).ready(function() {
         $("#newspot_button").css("color", "white");
         $("#hotspot_block").hide();
         $("#newspot_block").show();
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const tooltipContainer = document.querySelector('.tooltip-container');
+        const tooltip = document.querySelector('.tooltip');
+    
+        tooltipContainer.addEventListener('mousemove', (e) => {
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+            
+            tooltip.style.left = `${mouseX + 10}px`;
+            tooltip.style.top = `${mouseY + 10}px`;
+        });
+    
+        tooltipContainer.addEventListener('mouseenter', () => {
+            tooltip.style.display = 'block';
+        });
+    
+        tooltipContainer.addEventListener('mouseleave', () => {
+            tooltip.style.display = 'none';
+        });
     });
 });

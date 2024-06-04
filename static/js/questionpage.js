@@ -36,6 +36,8 @@ $(document).ready(function() {
     });
 
     $("main").append(`
+    <link rel="stylesheet" href="../static/css/prism.css">
+    <script src="../static/js/plugins/prism.js"></script>
     <link rel="stylesheet" href="../static/css/wangeditor.css">
     <script src="../static/js/plugins/wangeditor.js"></script>
     <style>

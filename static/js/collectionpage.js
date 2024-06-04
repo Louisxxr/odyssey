@@ -66,8 +66,9 @@ $(document).ready(function() {
         
         .tooltip {
             position: absolute;
-            background-color: rgba(0, 0, 0, 0.75);
-            color: white;
+            background-color: rgba(255, 255, 255, 0.75);
+            border: 1px solid black;
+            color: black;
             padding: 5px 10px;
             border-radius: 4px;
             white-space: nowrap;

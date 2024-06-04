@@ -15,7 +15,7 @@ $(document).ready(function() {
                     border: 1px solid #ccc;
                     z-index: 100; /* 按需定义 */
                 }
-                #toolbar-container-title { border-bottom: 1px solid #ccc; }
+                #toolbar-container-title { border-bottom: 0px; }
                 #editor-container-title { height: 50px; }
             </style>
             <script>
